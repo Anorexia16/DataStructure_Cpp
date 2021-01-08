@@ -1,0 +1,26 @@
+1. Chain Bin Sort
+        Algorithm/Chain_Bin_Sort.hpp
+        from Unidirectional Cyclic chain controls value to Chains in one Unidirectional Cyclic chain.
+
+2. Infinity Calculations
+        Lib/Infinity_Calculations_C.hpp, Lib/Infinity_Calculations_A.hpp
+        in Array & Chain
+
+3. Refresh Problem
+        Lib/Deck.hpp
+
+4. Decorator
+        Lib/Decorator.hpp
+        solve the rest method designing
+
+5. Tensor
+        Structure/Tensor_Square.hpp
+        declaration in package style
+
+6. Dim2 Matrix in Chain
+        Structure/Matrix_N2.hpp
+        Construct Node Chains error
+
+7. Specialize STL Matrix in std::array
+        Structure/Matrix_STL1.hpp
+        Structure/Matrix_STL2.hpp

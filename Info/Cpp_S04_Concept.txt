@@ -1,0 +1,29 @@
+template<typename cls>
+concept is_square_matrix = requires(Matrix_STL2 <cls> const &op) { op.Rows == op.Columns; };
+
+template<typename cls>
+concept is_2x2_matrix = requires(Matrix_STL2 <cls> const &op) { op.Rows == op.Columns;op.Rows == 2; };
+
+template<typename cls>
+concept is_3x3_matrix = requires(Matrix_STL2 <cls> const &op) { op.Rows == op.Columns;op.Rows == 3; };
+
+template<typename cls>
+Matrix_STL2 <cls> inverse(Matrix_STL2 < cls >
+const &matrix) {
+if (!
+is_square_matrix<cls>(matrix)
+) throw;
+}
+
+template<is_2x2_matrix S_Matrix>
+decltype(auto) determinant(S_Matrix const &matrix) {
+    return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+}
+
+template<is_3x3_matrix S_Matrix>
+decltype(auto) determinant(S_Matrix const &matrix) {
+    return matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] +
+           matrix[0][2] * matrix[1][0] * matrix[2][1] -
+           matrix[0][2] * matrix[1][1] * matrix[2][0] - matrix[0][1] * matrix[1][0] * matrix[2][2] -
+           matrix[0][0] * matrix[1][2] * matrix[2][1];
+}
