@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Algorithm/Chain_Select_Sort.hpp"
-#include "Algorithm/Chain_Insert_Sort.hpp"
+#include "Cpp_Data_Structure/Algorithm/Chain_Select_Sort.hpp"
+#include "Cpp_Data_Structure/Algorithm/Chain_Insert_Sort.hpp"
 
 int main() {
     ChainUC<int> ci{10};

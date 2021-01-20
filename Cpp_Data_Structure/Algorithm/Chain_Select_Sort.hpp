@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_CHAIN_SELECT_SORT_HPP
 #define DATASTRUCTURE_CHAIN_SELECT_SORT_HPP
 
-#include "../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Chain_Unidirectional_Circle.hpp"
 
 template<typename T, bool reverse>
 class Chain_Select_Sorter : public ChainUC<T> {

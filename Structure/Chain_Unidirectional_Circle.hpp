@@ -7,7 +7,7 @@
 template<typename T>
 class ChainUC : public LinearList<T> {
 public:
-    explicit ChainUC(size_t const &);
+    explicit ChainUC(size_t const & = 256);
 
     ChainUC(ChainUC<T> const &);
 

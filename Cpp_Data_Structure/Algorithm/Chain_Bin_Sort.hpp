@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_CHAIN_BIN_SORT_HPP
 #define DATASTRUCTURE_CHAIN_BIN_SORT_HPP
 
-# include "../Structure/Chain_Unidirectional_Circle.hpp"
+# include "../../Structure/Chain_Unidirectional_Circle.hpp"
 # include <array>
 
 template<typename T, bool reverse>

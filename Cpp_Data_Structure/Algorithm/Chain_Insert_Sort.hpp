@@ -1,10 +1,10 @@
 #ifndef DATASTRUCTURE_CHAIN_INSERT_SORT_HPP
 #define DATASTRUCTURE_CHAIN_INSERT_SORT_HPP
 
-#include "../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Chain_Unidirectional_Circle.hpp"
 
 template<typename T, bool reverse>
-class Chain_Insert_Sorter : public ChainUC<T> {
+class Chain_Insert_Sorter : virtual public ChainUC<T> {
 public:
     explicit Chain_Insert_Sorter(ChainUC <T> &);
 
@@ -63,11 +63,11 @@ void Chain_Insert_Sorter<T, reverse>::operator()(ChainUC <T> &op) {
 }
 
 template<typename T>
-void Chain_Insert_Sort(ChainUC <T> &op, bool const &reverse = false) {
+void Chain_Insert_Sort(ChainUC <T> &&op, bool const &reverse = false) {
     if (!reverse) {
-        Chain_Insert_Sorter<T, false>{op};
+        Chain_Insert_Sorter<T, false>{std::forward<>(op)};
     } else {
-        Chain_Insert_Sorter<T, true>{op};
+        Chain_Insert_Sorter<T, true>{std::forward<>(op)};
     }
 }
 

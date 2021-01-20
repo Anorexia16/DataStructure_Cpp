@@ -24,3 +24,10 @@
 7. Specialize STL Matrix in std::array
         Structure/Matrix_STL1.hpp
         Structure/Matrix_STL2.hpp
+
+8. Operator times in Polynomial
+        Normal_Algorithm/math/Polynomial.hpp
+        Normal_Algorithm/math/Polynomial_C.hpp
+
+9. Operator times in Tridiagonal Matrix
+        Cpp_Data_Structure\Special_Structure\Matrix_Tridiagonal.hpp

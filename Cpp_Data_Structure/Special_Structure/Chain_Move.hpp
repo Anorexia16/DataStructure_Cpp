@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_CHAIN_MOVE
 #define DATASTRUCTURE_CHAIN_MOVE
 
-#include "Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Chain_Unidirectional_Circle.hpp"
 
 template<typename T>
 class ChainMove {

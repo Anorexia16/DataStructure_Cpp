@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Structure/Matrix_STL2.hpp"
 #include "Structure/Matrix_P2.hpp"
+#include "Cpp_Data_Structure/Special_Structure/Matrix_Sparse_Chain.hpp"
+#include "Structure/Node_Nonlinear.hpp"
 
 int main() {
     Matrix_STL2<double> m2 {{1, 2, 3}, 1, 3};

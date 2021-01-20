@@ -156,14 +156,15 @@ std::map<cls, Cont1<cls>> make_map_from_range_matrix(Matrix const &matrix, Cont2
 
 // 4.18
 // Run in main.cpp:
-//      Info/Test_Samples/Indexed/Cpp_04_River_Boat.txt
+//      Info/Test_Samples/River_Boat.txt
 
 // 4.19
 // Run in main.cpp:
-//      Info/Test_Samples/Indexed/Cpp_04_Dog_House.txt
+//      Info/Test_Samples/Dog_House.txt
 
 // 4.20
 // Details in:
+//      Cpp_Data_Structure/Special_Structure/Matrix_Diagonal.hpp
 
 
 

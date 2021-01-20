@@ -402,16 +402,16 @@ void ChainU03<T>::circle_shift(int const &x) {
 
 // 3.24
 // Details in:
-//      Structure/Chain_Move.hpp
+//      ./Special_Structure/Chain_Move.hpp
 
 // 3.25
 // Details in:
-//      Structure/Chain_Move_Linear.hpp
+//      ./Special_Structure/Chain_Move_Linear.hpp
 
 // 3.26
 // Details in:
-//      Algorithm/Chain_Insert_Sort.hpp
-//      Algorithm/Chain_Bubble_Sort.hpp
+//      ./Algorithm/Chain_Insert_Sort.hpp
+//      ./Algorithm/Chain_Bubble_Sort.hpp
 
 // 3.27 - 3.36
 // pass
@@ -456,14 +456,15 @@ void ChainB03<T>::extend(ChainB03<T> &op) {
 
 // 3.34-35
 // Details in:
-//      Algorithm/Chain_Radix_Sort.hpp
+//      ./Algorithm/Chain_Radix_Sort.hpp
 
 // 3.36
 // Details in:
-//      Lib/Deck_Box_Sort.hpp
+//      ./Lib/Deck_Box_Sort.hpp
 
 // 3.37
 // Details in:
-//      Lib/No_Limits_Calculations.hpp
+//      ./Lib/No_Limits_Calculations_C.hpp
+//      ./Lib/No_Limits_Calculations_A.hpp
 
 #endif //DATASTRUCTURE_SECTION3_LINEAR_CHAIN_HPP
