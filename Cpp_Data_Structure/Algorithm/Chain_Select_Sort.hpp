@@ -21,7 +21,7 @@ Chain_Select_Sorter<T, reverse>::Chain_Select_Sorter(ChainUC <T> &op)
 template<typename T, bool reverse>
 void Chain_Select_Sorter<T, reverse>::operator()(ChainUC <T> &op) {
     if (op.size() == 0 || op.size() == 1) return;
-    NodeU_Iter <T> zone_pointer{op.head()};
+    NodeU_Iter <T> zone_pointer;
     NodeU_Iter <T> iterator{op.head()};
     NodeU_Iter <T> pre_ptr{op.head()};
     T temp = op.head()->next().value_c();

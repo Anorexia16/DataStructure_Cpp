@@ -9,7 +9,7 @@ class Stack_C {
 
     void push(T const &);
 
-    T &top();
+    T top() const;
 
     void pop();
 
@@ -25,7 +25,7 @@ class Stack_C {
         return out;
     }
 
-private:
+protected:
     ChainUC<T> Container;
 };
 
@@ -39,7 +39,7 @@ void Stack_C<T>::push(T const &x) {
 }
 
 template<typename T>
-T &Stack_C<T>::top() {
+T Stack_C<T>::top() const {
     return this->Container.head_c()->next()();
 }
 

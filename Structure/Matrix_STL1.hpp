@@ -59,7 +59,7 @@ public:
 
     size_t Rows;
 
-private:
+protected:
     inline cls &operator[](size_t const &);
 
     Cont<cls> Container;

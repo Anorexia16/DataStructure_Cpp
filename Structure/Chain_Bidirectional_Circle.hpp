@@ -25,7 +25,7 @@ public:
 
     void insert(size_t const &, T const &);
 
-    T &operator[](size_t const &) const;
+    T &operator[](size_t const &);
 
     friend std::ostream &operator<<(std::ostream &out, ChainBC<T> const &x) {
         NodeB_Iter<T> iterator{x.head_c()->next_ptr()};
@@ -103,7 +103,7 @@ void ChainBC<T>::insert(size_t const &index, T const &elem) {
 }
 
 template<typename T>
-T &ChainBC<T>::operator[](size_t const &x) const {
+T &ChainBC<T>::operator[](size_t const &x) {
     NodeB<T> *iterator = this->Head;
     for (auto iter = 0; iter != x; iter++) {
         iterator = iterator->next_ptr();

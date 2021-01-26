@@ -16,23 +16,21 @@ public:
 
     NodeB<T> &operator=(T const &);
 
-    NodeB<T> &operator=(T &);
+    inline T &operator()();
 
-    T &operator()();
+    virtual inline NodeB<T> &next();
 
-    virtual NodeB<T> &next();
+    virtual inline NodeB<T> *next_ptr();
 
-    virtual NodeB<T> *next_ptr();
+    virtual inline NodeB<T> &prev();
 
-    virtual NodeB<T> &prev();
+    virtual inline NodeB<T> *prev_ptr();
 
-    virtual NodeB<T> *prev_ptr();
+    inline void link_front(NodeB<T> &);
 
-    void link_front(NodeB<T> &);
+    inline void link_after(NodeB<T> &);
 
-    void link_after(NodeB<T> &);
-
-    T const &value_c() const;
+    virtual inline T value_c() const;
 
     friend std::ostream &operator<<(std::ostream &out, NodeB<T> &x) {
         out << x.element;
@@ -64,11 +62,6 @@ NodeB<T>::NodeB(const T &x, NodeB<T> *ptr1, NodeB<T> *ptr2)
 template<typename T>
 NodeB<T> &NodeB<T>::operator=(const T &x) {
     this->Element = const_cast<T &>(x);
-}
-
-template<typename T>
-NodeB<T> &NodeB<T>::operator=(T &x) {
-    this->Element = x;
 }
 
 template<typename T>
@@ -107,20 +100,20 @@ void NodeB<T>::link_after(NodeB<T> &x) {
 }
 
 template<typename T>
-T const &NodeB<T>::value_c() const {
+T NodeB<T>::value_c() const {
     return this->Element;
 }
 
 template<typename T>
 class NodeB_Iter : virtual public NodeB<T> {
-private:
+protected:
     NodeB<T> *Ptr;
 public:
     NodeB_Iter();
 
-    explicit NodeB_Iter(NodeB<T> &&);
+    explicit NodeB_Iter(NodeB<T> &);
 
-    explicit NodeB_Iter(const NodeB<T> *);
+    explicit NodeB_Iter(const NodeB<T> *const &);
 
     inline NodeB<T> &operator*();
 
@@ -130,29 +123,29 @@ public:
 
     inline NodeB_Iter<T> &operator--();
 
-    inline NodeB_Iter<T> const operator++(int) const;
+    inline const NodeB_Iter<T> operator++(int) const;
 
-    inline NodeB_Iter<T> const operator--(int) const;
+    inline const NodeB_Iter<T> operator--(int) const;
 
     inline bool operator==(NodeB_Iter<T> const &) const;
 
     inline bool operator!=(NodeB_Iter<T> const &) const;
 
-    inline bool operator==(const NodeB<T> *) const;
+    inline bool operator==(const NodeB<T> *const &) const;
 
-    inline bool operator!=(const NodeB<T> *) const;
+    inline bool operator!=(const NodeB<T> *const &) const;
 
-    inline NodeB_Iter<T> &turn_to(const NodeB<T> *);
+    inline NodeB_Iter<T> &turn_to(const NodeB<T> *const &);
 
-    inline const T &value_c() { return this->Ptr->value_c(); }
+    inline T value_c() const;
 
-    inline NodeB<T> &next() { return this->Ptr->next(); }
+    inline NodeB<T> &next();
 
-    inline NodeB<T> *next_ptr() { return this->Ptr->next_ptr(); }
+    inline NodeB<T> *next_ptr();
 
-    inline NodeB<T> &prev() { return this->Ptr->prev(); }
+    inline NodeB<T> &prev();
 
-    inline NodeB<T> *prev_ptr() { return this->Ptr->prev_ptr(); }
+    inline NodeB<T> *prev_ptr();
 };
 
 template<typename T>
@@ -160,11 +153,11 @@ NodeB_Iter<T>::NodeB_Iter()
         : Ptr(nullptr) {}
 
 template<typename T>
-NodeB_Iter<T>::NodeB_Iter(NodeB<T> &&elem)
+NodeB_Iter<T>::NodeB_Iter(NodeB<T> &elem)
         : Ptr(&elem) {}
 
 template<typename T>
-NodeB_Iter<T>::NodeB_Iter(const NodeB<T> *ptr)
+NodeB_Iter<T>::NodeB_Iter(const NodeB<T> *const &ptr)
         :Ptr(const_cast<NodeB<T> *>(ptr)) {}
 
 template<typename T>
@@ -214,19 +207,44 @@ bool NodeB_Iter<T>::operator!=(const NodeB_Iter<T> &op) const {
 }
 
 template<typename T>
-bool NodeB_Iter<T>::operator==(const NodeB<T> *ptr) const {
+bool NodeB_Iter<T>::operator==(const NodeB<T> *const &ptr) const {
     return this->Ptr == ptr;
 }
 
 template<typename T>
-bool NodeB_Iter<T>::operator!=(const NodeB<T> *ptr) const {
+bool NodeB_Iter<T>::operator!=(const NodeB<T> *const &ptr) const {
     return this->Ptr != ptr;
 }
 
 template<typename T>
-NodeB_Iter<T> &NodeB_Iter<T>::turn_to(const NodeB<T> *ptr) {
+NodeB_Iter<T> &NodeB_Iter<T>::turn_to(const NodeB<T> *const &ptr) {
     this->Ptr = const_cast<NodeB<T> *>(ptr);
     return *this;
+}
+
+template<typename T>
+T NodeB_Iter<T>::value_c() const {
+    return this->Ptr->value_c();
+}
+
+template<typename T>
+NodeB<T> &NodeB_Iter<T>::next() {
+    return this->Ptr->next();
+}
+
+template<typename T>
+NodeB<T> *NodeB_Iter<T>::next_ptr() {
+    return this->Ptr->next_ptr();
+}
+
+template<typename T>
+NodeB<T> &NodeB_Iter<T>::prev() {
+    return this->Ptr->prev();
+}
+
+template<typename T>
+NodeB<T> *NodeB_Iter<T>::prev_ptr() {
+    return this->Ptr->prev_ptr();
 }
 
 

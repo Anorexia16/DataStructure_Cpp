@@ -66,8 +66,7 @@ public:
 
     inline Cont<cls> &operator[](size_t const &);
 
-private:
-
+protected:
     Cont<Cont<cls>> Container;
 };
 

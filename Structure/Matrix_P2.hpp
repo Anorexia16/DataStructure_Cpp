@@ -62,7 +62,7 @@ public:
 
     inline cls *&operator[](size_t const &);
 
-private:
+protected:
     cls **Container;
 };
 

@@ -25,7 +25,7 @@ public:
 
     void insert(size_t const &, T const &);
 
-    T &operator[](size_t const &) const;
+    T &operator[](size_t const &);
 
     friend std::ostream &operator<<(std::ostream &out, ChainU<T> const &x) {
         NodeU_Iter<T> iterator{x.head_c()->next_ptr()};
@@ -105,7 +105,7 @@ void ChainU<T>::insert(size_t const &index, const T &elem) {
 }
 
 template<typename T>
-T &ChainU<T>::operator[](size_t const &x) const {
+T &ChainU<T>::operator[](size_t const &x){
     NodeU<T> *iterator = this->Head;
     for (auto iter = 0; iter != x; iter++) {
         iterator = iterator->next_ptr();

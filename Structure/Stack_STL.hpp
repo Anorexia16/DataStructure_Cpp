@@ -22,13 +22,11 @@ public:
 
     void push(T const &);
 
-    void push(T &);
-
     [[nodiscard]] size_t size() const;
 
     void pop();
 
-    T &top() const;
+    T top() const;
 
     Cont<T> &operator*() { return Container; }
 
@@ -61,11 +59,6 @@ void Stack<T, Cont>::push(T const &x) {
 }
 
 template<typename T, template<typename, typename> class Cont>
-void Stack<T, Cont>::push(T &x) {
-    Container.emplace_back(x);
-}
-
-template<typename T, template<typename, typename> class Cont>
 size_t Stack<T, Cont>::size() const {
     return Container.Size();
 }
@@ -79,7 +72,7 @@ void Stack<T, Cont>::pop() {
 }
 
 template<typename T, template<typename, typename> class Cont>
-T &Stack<T, Cont>::top() const {
+T Stack<T, Cont>::top() const {
     if (this->empty()) {
         throw std::out_of_range("Stack is empty");
     }

@@ -63,7 +63,7 @@ public:
 
     inline ChainBC<cls> &operator[](size_t const &);
 
-private:
+protected:
     ChainBC<ChainBC<cls>> Container;
 };
 
