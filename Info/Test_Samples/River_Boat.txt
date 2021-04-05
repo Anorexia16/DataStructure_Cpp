@@ -1,0 +1,21 @@
+#include "Cpp_Data_Structure/Section4_Array_and_Matrix.hpp"
+#include <iostream>
+
+int main() {
+    Matrix_STL2<int> matrix {{1, 0, 0, 0, 1, 0, 0, 0, 1}, 3, 3};
+    std::map<int, std::vector<int>> map;
+    map[0] = std::vector{0, 2, 5, 6};
+    map[1] = std::vector{2, 4, 5};
+    map[2] = std::vector{2, 4, 6};
+    map[3] = std::vector{4, 5, 6};
+    map[4] = std::vector{6};
+    map[5] = std::vector{5, 6};
+    map[6] = std::vector{6};
+    auto bool_matrix = make_matrix_from_map_range(map);
+    auto r_bool_matrix = bool_matrix.T();
+    auto k = make_map_from_range_matrix(r_bool_matrix, std::vector{0, 1, 2, 3, 4, 5, 6});
+    std::cout << bool_matrix << std::endl;
+    std::cout << make_matrix_from_map_range(k) << std::endl;
+    std::cout << upper_triangular(bool_matrix) << std::endl;
+    std::cout << lower_triangular(make_matrix_from_map_range(k)) << std::endl;
+}

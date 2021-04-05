@@ -1,0 +1,17 @@
+#include <iostream>
+#include "Cpp_Data_Structure/Special_Structure/Huffman_Code.hpp"
+
+int main() {
+    std::map<std::string, size_t> _map {};
+    _map["a"] = 6;
+    _map["b"] = 2;
+    _map["c"] = 3;
+    _map["d"] = 3;
+    _map["e"] = 4;
+    _map["f"] = 9;
+    auto test = Huffman_Tree(_map);
+    auto _res1 = test.locate("a");
+    auto _res2 = Huffman_Tree::Huffman_Chart(_map);
+
+    std::cout << "Debug Hook";
+}

@@ -1,0 +1,14 @@
+#include <vector>
+#include "Structure/Node_Nonlinear.hpp"
+#include "Normal_Algorithm/Linear/Legal_Pop.hpp"
+#include "Structure/Skip_List.hpp"
+#include "Normal_Algorithm/My_Iterator/Ranger.hpp"
+
+int main() {
+    std::cout << Legal_4Stack(std::vector<int>{3, 1, 2,  4, 5}) << std::endl;
+    Skip_List test1 (std::array<size_t , 4>{7, 3, 2, 4});
+    std::cout << test1 << std::endl;
+    Range test2 {5, -4, -2};
+    std::copy(std::begin(test2), std::back(test2), std::ostream_iterator<long long>(std::cout, " "));
+    printf("Debug Hook");`
+}

@@ -1,0 +1,10 @@
+#include "Structure/Leftist_Tree.hpp"
+
+int main() {
+    auto tree1 = make_LT({40, 10, 20, 30, 5});
+    auto tree2 = make_LT(std::vector<int>{18, 6, 7});
+    std::cout << tree1.top() << std::endl;
+    std::cout << tree1.weight() << std::endl;
+    tree1.merge(tree2);
+    std::cout << "Debug Hook" << std::endl;
+}

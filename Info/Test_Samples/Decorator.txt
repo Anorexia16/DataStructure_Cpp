@@ -1,0 +1,14 @@
+#include "Lib/Decorator.hpp"
+#include <iostream>
+#include <tuple>
+
+void sum_times(int const &x, int const &y, int const &z) {
+    std::cout <<  (x + y) * z << std::endl;
+}
+
+int main() {
+    int * const z = new int {7};
+    Decorate(sum_times, 2, *z).at(1);
+    Decorate(sum_times).at(1).when(2, *z);
+    printf("Debug Hook");
+}

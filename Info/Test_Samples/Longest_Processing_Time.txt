@@ -1,0 +1,9 @@
+#include <iostream>
+#include "Cpp_Data_Structure/Algorithm/Longest_Processing_Time.hpp"
+
+int main() {
+    std::vector<double> time {2, 14, 4, 16, 6, 5, 3};
+    auto res = solve_lpt(time, 3);
+
+    std::cout << "Debug Hook";
+}

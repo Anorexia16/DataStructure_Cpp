@@ -1,0 +1,54 @@
+#include "Structure/Binary_Tree.hpp"
+#include <iostream>
+
+int main() {
+    Binary_Tree<std::string> tree {};
+    Binary_Node<std::string> head {"/"};
+    Binary_Node<std::string> child11 {"+"};
+    Binary_Node<std::string> child12 {"*"};
+    Binary_Node<std::string> child21 {"-"};
+    Binary_Node<std::string> child23 {"+"};
+    Binary_Node<std::string> child22 {"+"};
+    Binary_Node<std::string> child24 {"*"};
+    Binary_Node<std::string> child31 {""};
+    Binary_Node<std::string> child32 {"a"};
+    Binary_Node<std::string> child33 {"x"};
+    Binary_Node<std::string> child34 {"y"};
+    Binary_Node<std::string> child35 {""};
+    Binary_Node<std::string> child36 {"b"};
+    Binary_Node<std::string> child37 {"c"};
+    Binary_Node<std::string> child38 {"a"};
+
+    tree.bind_top(head);
+    tree.to_inner();
+
+    tree.top().link_d(child11);
+    tree.top().link_d(child12);
+    child31.link_u(child21);
+    child32.link_u(child21);
+    child33.link_u(child22);
+    child34.link_u(child22);
+    child35.link_u(child23);
+    child36.link_u(child23);
+    child37.link_u(child24);
+    child38.link_u(child24);
+
+    child21.link_u(tree.top().left());
+    child22.link_u(tree.top().left());
+    child23.link_u(tree.top().right());
+    tree.top().right().link_d(child24);
+
+
+    auto Cache1 = tree.top().left().left().path();
+    for (auto Cache2 = std::begin(tree) ; Cache2 != std::back(tree); ++Cache2) {
+        if (*Cache2 != "") std::cout << *Cache2 << " ";
+    }
+    auto Cache3 = tree.find("c");
+
+    std::cout << std::endl;
+    std::cout << std::boolalpha << tree.complete() << std::endl;
+    std::cout << std::boolalpha << tree.full() << std::endl;
+    std::cout << std::boolalpha << tree.degree() << std::endl;
+    std::cout << std::boolalpha << tree.depth() << std::endl;
+    std::cout << "Debug Hook" << std::endl;
+}

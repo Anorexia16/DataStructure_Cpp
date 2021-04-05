@@ -1,0 +1,24 @@
+#include <iostream>
+#include <iterator>
+#include "Cpp_Data_Structure/Algorithm/Chain_Select_Sort.hpp"
+#include "Cpp_Data_Structure/Algorithm/Chain_Insert_Sort.hpp"
+
+int main() {
+    ChainUC<int> ci{10};
+    ChainUC<int> cq{10};
+    ci.insert(0, 8);
+    ci.insert(0, -1);
+    ci.insert(0, 3);
+    ci.insert(0, 2);
+    ci.insert(0, 6);
+    cq.insert(0, 8);
+    cq.insert(0, -1);
+    cq.insert(0, 3);
+    cq.insert(0, 2);
+    cq.insert(0, 6);
+    std::cout << ci << std::endl;
+    Chain_Select_Sort(ci, false);
+    Chain_Insert_Sort(cq, true);
+    std::cout << ci << std::endl;
+    std::copy(std::begin(cq), std::back(cq), std::ostream_iterator<int>(std::cout, " "));
+}

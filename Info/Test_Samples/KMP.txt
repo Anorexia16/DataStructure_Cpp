@@ -1,0 +1,22 @@
+#include "Normal_Algorithm/Re/Re.hpp"
+#include "Cpp_Data_Structure/Lib/LWZ.hpp"
+#include <iostream>
+
+int main() {
+    str _word1 = "ababaaababaa";
+    str _word2 = "abaabaabcabaabc";
+    str _word3 = "Illidan is out here somewhere.";
+    str _sub = "abaabc";
+    Re &re1 = Re::Instance();
+    Re &re2 = Re::Instance();
+    auto _next = Re::get_next(_word1);
+    auto _nextV = Re::get_nextVal(_word1);
+    auto _pos1 = Re::find(_word2, _sub);
+    auto _pos2 = Re::find_between(_word2, _sub, 4, 15);
+    auto _set = Re::split(_word3, "e");
+
+    LWZ_Compressor::LWZ_Compress(R"(C:\Users\Anorexia\Desktop\Cpp\DataStructure_Cpp\Info\Test_Samples\Text_UnCompressed.txt)",
+                                     "", "ab");
+
+    std::cout << "Debug Hook" <<std::endl;
+}

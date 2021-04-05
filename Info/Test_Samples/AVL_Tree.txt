@@ -1,0 +1,12 @@
+#include<iostream>
+#include "Structure/AVL_Tree.hpp"
+
+
+int main() {
+    std::vector<Pair_Unit<int, std::string>> _vec {Pair_Unit<int, std::string>{30, "a"}, Pair_Unit<int, std::string>{5, "b"}, Pair_Unit<int, std::string>{2, "c"},
+                                                   Pair_Unit<int, std::string>{40, "d"}, Pair_Unit<int, std::string>{35, "e"}, Pair_Unit<int, std::string>{80, "temp"},
+                                                   Pair_Unit<int, std::string>{80, "f"}};
+    auto c = make_avl(_vec);
+
+    std::cout << "Debug Hook" << std::endl;
+}
