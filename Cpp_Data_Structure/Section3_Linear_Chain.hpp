@@ -1,10 +1,10 @@
 #ifndef DATASTRUCTURE_SECTION3_LINEAR_CHAIN_HPP
 #define DATASTRUCTURE_SECTION3_LINEAR_CHAIN_HPP
 
-#include "../Structure/Chain_Unidirectional_Circle.hpp"
-#include "../Structure/Chain_Bidirectional_Circle.hpp"
-#include "../Structure/Array_List.hpp"
-#include "../Structure/Node_Bidirectional.hpp"
+#include "../Structure/Linear/Chain_Unidirectional_Circle.hpp"
+#include "../Structure/Linear/Chain_Bidirectional_Circle.hpp"
+#include "../Structure/Linear/Array_List.hpp"
+#include "../Structure/Assistance/Node_Bidirectional.hpp"
 
 // assistance interface
 template<typename T>

@@ -1,8 +1,8 @@
 #ifndef DATASTRUCTURE_MATRIX_SPARSE_CHAIN_HPP
 #define DATASTRUCTURE_MATRIX_SPARSE_CHAIN_HPP
 
-#include "../../Structure/Chain_Unidirectional_Circle.hpp"
-#include "../../Structure/Abstract_Matrix.hpp"
+#include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Abstract/Abstract_Matrix.hpp"
 #include <ostream>
 
 template<typename cls>

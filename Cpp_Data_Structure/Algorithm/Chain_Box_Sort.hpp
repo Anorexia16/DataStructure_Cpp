@@ -2,7 +2,7 @@
 #define DATASTRUCTURE_CHAIN_BOX_SORT_HPP
 
 #include <functional>
-#include "../../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 
 template<typename cls>
 class Chain_Box_Sorter : virtual public ChainUC<cls>

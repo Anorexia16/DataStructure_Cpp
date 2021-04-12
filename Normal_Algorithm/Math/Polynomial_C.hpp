@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_POLYNOMIAL_C_HPP
 #define DATASTRUCTURE_POLYNOMIAL_C_HPP
 
-#include "../../Structure/Chain_Bidirectional_Circle.hpp"
+#include "../../Structure/Linear/Chain_Bidirectional_Circle.hpp"
 
 class Polynomial_C
 {

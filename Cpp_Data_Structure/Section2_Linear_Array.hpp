@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_SECTION2_LINEAR_ARRAY_HPP // 数据结构与算法第五章习题练习
 #define DATASTRUCTURE_SECTION2_LINEAR_ARRAY_HPP
 
-#include "../Structure/Array_List.hpp"
+#include "../Structure/Linear/Array_List.hpp"
 #include <algorithm>
 #include <cmath>
 

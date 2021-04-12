@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_INFINITY_CALCULATIONS_C_HPP
 #define DATASTRUCTURE_INFINITY_CALCULATIONS_C_HPP
 
-#include "../../Structure/Chain_Bidirectional_Circle.hpp"
+#include "../../Structure/Linear/Chain_Bidirectional_Circle.hpp"
 #include <iostream>
 #include <utility>
 #include <cmath>

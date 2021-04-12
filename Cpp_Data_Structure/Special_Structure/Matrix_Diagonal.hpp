@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <algorithm>
-#include "../../Structure/Abstract_Matrix.hpp"
-#include "../../Structure/Matrix_STL2.hpp"
+#include "../../Structure/Abstract/Abstract_Matrix.hpp"
+#include "../../Structure/Dimension/Matrix_STL2.hpp"
 
 template<typename cls>
 class Matrix_Diagonal: virtual public Matrix<cls> {

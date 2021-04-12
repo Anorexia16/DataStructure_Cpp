@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_CHAIN_RADIX_SORT_HPP
 #define DATASTRUCTURE_CHAIN_RADIX_SORT_HPP
 
-#include "../../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 #include <cmath>
 
 template<typename T, bool reverse>

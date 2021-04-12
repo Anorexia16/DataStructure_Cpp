@@ -4,9 +4,9 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "../../Structure/Storage_Unit.hpp"
-#include "../../Structure/Leftist_Tree.hpp"
-#include "../../Structure/Winner_Tree.hpp"
+#include "../../Structure/Assistance/Storage_Unit.hpp"
+#include "../../Structure/Dendroid/Leftist_Tree.hpp"
+#include "../../Structure/Dendroid/Winner_Tree.hpp"
 
 class FP_Algorithm {
 

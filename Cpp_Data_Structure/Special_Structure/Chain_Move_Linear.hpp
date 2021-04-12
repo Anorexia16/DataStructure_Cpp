@@ -1,8 +1,8 @@
 #ifndef DATASTRUCTURE_CHAIN_MOVE
 #define DATASTRUCTURE_CHAIN_MOVE
 
-#include "../../Structure/Abstract_Linear_List.hpp"
-#include "../../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Abstract/Abstract_Linear_List.hpp"
+#include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 
 template<typename T>
 class ChainMove : LinearList<T>, ChainUC<T> {

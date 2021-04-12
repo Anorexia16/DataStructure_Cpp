@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_SECTION4_ARRAY_AND_MATRIX_HPP
 #define DATASTRUCTURE_SECTION4_ARRAY_AND_MATRIX_HPP
 
-#include "../Structure/Matrix_STL2.hpp"
+#include "../Structure/Dimension/Matrix_STL2.hpp"
 #include <iostream>
 #include <map>
 

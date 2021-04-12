@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_DECK_HPP
 #define DATASTRUCTURE_DECK_HPP
 
-#include "../../Structure/Chain_Unidirectional_Circle.hpp"
+#include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 #include <utility>
 
 using namespace std::rel_ops;

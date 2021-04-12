@@ -1,10 +1,10 @@
 #ifndef DATASTRUCTURE_S02_LINEAR_LIST_CHAIN_HPP
 #define DATASTRUCTURE_S02_LINEAR_LIST_CHAIN_HPP
 
-#include "../Structure/Chain_Unidirectional_Circle.hpp"
-#include "../Structure/Chain_Bidirectional_Circle.hpp"
-#include "../Structure/Chain_Unidirectional.hpp"
-#include "../Structure/Chain_Bidirectional.hpp"
+#include "../Structure/Linear/Chain_Unidirectional_Circle.hpp"
+#include "../Structure/Linear/Chain_Bidirectional_Circle.hpp"
+#include "../Structure/Linear/Chain_Unidirectional.hpp"
+#include "../Structure/Linear/Chain_Bidirectional.hpp"
 #include <ostream>
 #include <vector>
 #include <iterator>

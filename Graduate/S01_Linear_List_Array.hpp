@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <iterator>
-#include "../Structure/Abstract_Linear_List.hpp"
+#include "../Structure/Abstract/Abstract_Linear_List.hpp"
 
 template<typename T>
 class arrayList_Ti : LinearList<T>
