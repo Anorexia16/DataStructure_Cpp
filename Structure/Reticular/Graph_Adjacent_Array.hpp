@@ -3,6 +3,9 @@
 
 #include <array>
 #include <vector>
+#include <iostream>
+#include "../Linear/Queue_Chain.hpp"
+#include "../Linear/Stack_Chain.hpp"
 #include "../Abstract/Abstract_Graph.hpp"
 
 template<typename Tp, size_t num, bool bidirectional = true, bool is_weighted = false>
@@ -29,6 +32,10 @@ struct Adjacent_Array: public Graph<Tp>
     void insert_edge(size_t const &, size_t const &, ssize_t const & = -1);
 
     void remove_edge(size_t const &, size_t const &);
+
+    std::ostream &BFS(std::ostream &, size_t const &);
+
+    std::ostream &DFS(std::ostream &, size_t const &);
 
     std::array<std::vector<std::pair<size_t, size_t>>, num> Container;
 };
@@ -106,8 +113,8 @@ void Adjacent_Array<Tp, num, bidirectional, is_weighted>::insert_edge(const size
     {
         if (weight <= -1) return;
         else {
-            this->Container[i].emplace_back(j, weight);
-            if (bidirectional) this->Container[j].template emplace_back(i, weight);
+            this->Container[i].emplace_back({j, weight});
+            if (bidirectional) this->Container[j].template emplace_back({i, weight});
         }
     } else {
         if (weight > 0) return;
@@ -135,6 +142,82 @@ void Adjacent_Array<Tp, num, bidirectional, is_weighted>::remove_edge(const size
                 Container[j].erase(std::begin(Container[j]) + idx);
                 break;
             }
+}
+
+template<typename Tp, size_t num, bool bidirectional, bool is_weighted>
+std::ostream &Adjacent_Array<Tp, num, bidirectional, is_weighted>::BFS(std::ostream &out, const size_t &begin) {
+    size_t _iter = begin - 1;
+    std::cout <<  "breadth first search on graph:" <<std::endl << begin << ' ';
+    bool traversed[num];
+    traversed[_iter] = true;
+
+    Queue_C<std::pair<size_t, size_t>> _queue {};
+    size_t ci = 0;
+
+    while(true)
+    {
+        if (Container[_iter][ci]==0&&traversed[ci]== true) {
+            if (ci+1 == Container[_iter].size()) {
+                if (_queue.empty()) break;
+                else {
+                    _iter = _queue.front().first;
+                    ci = _queue.front().second;
+                    _queue.dequeue();
+                }
+            } else ++ci;
+        } else {
+            traversed[ci] = true;
+            out << ci+1 << ' ';
+            _queue.enqueue({ci, 0});
+            if (ci+1!= Container[_iter].size())
+            {
+                ++ci;
+            } else {
+                _iter = _queue.front().first;
+                ci = _queue.front().second;
+                _queue.dequeue();
+            }
+        }
+    }
+    out << std::endl;
+    return out;
+}
+
+template<typename Tp, size_t num, bool bidirectional, bool is_weighted>
+std::ostream &Adjacent_Array<Tp, num, bidirectional, is_weighted>::DFS(std::ostream &out, const size_t &begin) {
+    out << "depth first search on graph:" << std::endl << begin << ' ';
+    bool traversed[num];
+    size_t _iter = begin-1;
+
+    traversed[begin - 1] = true;
+    Stack_C<std::pair<size_t, size_t>> _stack {};
+    size_t ci = 0;
+
+    while (true)
+    {
+        if (Container[_iter][ci]==0 && traversed[ci]==true)
+        {
+            if (ci+1 == Container[_iter].size())
+            {
+                if (_stack.empty()) break;
+                else
+                {
+                    _iter = _stack.top().first;
+                    ci = _stack.top().second;
+                    _stack.pop();
+                }
+            } else ++ci;
+        } else {
+            if (ci+1!=Container[_iter].size()) _stack.push({_iter, ci+1});
+            _iter = Container[_iter][ci];
+            ci = 0;
+            out << _iter+1 << ' ';
+            traversed[_iter] = true;
+        }
+    }
+
+    out << std::endl;
+    return out;
 }
 
 #endif //DATASTRUCTURE_GRAPH_ADJACENT_ARRAY_HPP

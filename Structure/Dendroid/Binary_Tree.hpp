@@ -193,8 +193,6 @@ public:
 
     static void path_compaction(Binary_Tree<Tp> &);
 
-    static void path_compaction(Binary_Node<Tp> &);
-
     static void path_splitting(Binary_Tree<Tp> &);
 
     static void path_halving(Binary_Tree<Tp> &);
@@ -216,6 +214,17 @@ protected:
 
     size_t *Size;
 };
+
+template<typename Tp>
+struct Binary_Node_Lite
+{
+    Binary_Node_Lite *Father;
+    Binary_Node_Lite *Right;
+    Binary_Node_Lite *Left;
+    Tp Value;
+};
+
+template<typename Tp> struct Binary_Tree_Lite {Binary_Node_Lite<Tp> *Head=nullptr;};
 
 template<typename Tp>
 Binary_Tree<Tp>::BT_base_iterator::BT_base_iterator(Binary_Tree<Tp> &Tree)
@@ -323,7 +332,7 @@ typename Binary_Tree<Tp>::BT_base_iterator &Binary_Tree<Tp>::BT_base_iterator::o
 template<typename Tp>
 const typename Binary_Tree<Tp>::BT_base_iterator Binary_Tree<Tp>::BT_base_iterator::operator++(int) const {
     Binary_Tree::BT_base_iterator res {*this};
-    ++res;
+    ++(*this);
     return res;
 }
 
@@ -518,7 +527,7 @@ typename Binary_Tree<Tp>::BT_base_const_iterator &Binary_Tree<Tp>::BT_base_const
 template<typename Tp>
 const typename Binary_Tree<Tp>::BT_base_const_iterator Binary_Tree<Tp>::BT_base_const_iterator::operator++(int) const {
     Binary_Tree::BT_base_iterator res {*this};
-    ++res;
+    ++(*this);
     return res;
 }
 

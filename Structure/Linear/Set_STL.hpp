@@ -341,7 +341,7 @@ template<typename Tp>
 const typename Set_STL<Tp>::SS_Iterator Set_STL<Tp>::SS_Iterator::operator++(int) const
 {
     Set_STL::SS_Iterator res {*this} ;
-    ++res.Count;
+    ++this->Count;
     return res;
 }
 
@@ -349,7 +349,7 @@ template<typename Tp>
 const typename Set_STL<Tp>::SS_Iterator Set_STL<Tp>::SS_Iterator::operator--(int) const
 {
     Set_STL::SS_Iterator res {*this} ;
-    --res.Count;
+    --this->Count;
     return res;}
 
 template<typename Tp>
@@ -458,7 +458,7 @@ template<typename Tp>
 const typename Set_STL<Tp>::SSR_Iterator Set_STL<Tp>::SSR_Iterator::operator++(int) const
 {
     Set_STL::SSR_Iterator res {*this};
-    --res.Count;
+    --this->Count;
     return res;
 }
 
@@ -466,7 +466,7 @@ template<typename Tp>
 const typename Set_STL<Tp>::SSR_Iterator Set_STL<Tp>::SSR_Iterator::operator--(int) const
 {
     Set_STL::SSR_Iterator res {*this};
-    ++res.Count;
+    ++this->Count;
     return res;}
 
 template<typename Tp>

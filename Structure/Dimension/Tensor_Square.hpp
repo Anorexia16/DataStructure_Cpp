@@ -3,7 +3,7 @@
 
 #include <array>
 #include <vector>
-#include "../../Cpp_Data_Structure/Lib/Operator.hpp"
+#include "../../Generic_Paradigm/Operator.hpp"
 
 template<typename, size_t, size_t ...>
 struct Tensor_S{};

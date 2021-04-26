@@ -1,0 +1,7 @@
+E:/VCTSS.csv
+cut /i 0
+spe /i 0
+0 1 2 ,
+info
+push
+4

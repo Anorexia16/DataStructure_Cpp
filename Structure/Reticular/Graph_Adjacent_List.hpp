@@ -179,7 +179,7 @@ void Adjacent_List<num, bidirectional, is_weighted>::remove_edge(const size_t &i
 
 template<size_t num, bool bidirectional, bool is_weighted>
 std::ostream &Adjacent_List<num, bidirectional, is_weighted>::DFS(std::ostream &out, size_t const &begin) {
-    out << "breadth first search on graph:" <<std::endl << begin << ' ';
+    out << "depth first search on graph:" <<std::endl << begin << ' ';
     bool traversed[num];
     ssize_t _iter = static_cast<ssize_t>(begin)-1;
 

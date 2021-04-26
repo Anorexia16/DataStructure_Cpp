@@ -135,13 +135,47 @@ void Adjacent_Matrix<Tp, num, bidirectional, is_weighted>::remove_edge(const siz
 
 template<typename Tp, size_t num, bool bidirectional, bool is_weighted>
 std::ostream &Adjacent_Matrix<Tp, num, bidirectional, is_weighted>::BFS(std::ostream &out, const size_t &begin) {
+    size_t _iter = begin - 1;
+    std::cout <<  "breadth first search on graph:" <<std::endl << begin << ' ';
+    bool traversed[num];
+    traversed[_iter] = true;
+
+    Queue_C<std::pair<size_t, size_t>> _queue {};
+    size_t ci = 0;
+
+    while(true)
+    {
+        if (Container[_iter][ci]==0&&traversed[ci]== true) {
+            if (ci + 1 == num) {
+                if (_queue.empty()) break;
+                else {
+                    _iter = _queue.front().first;
+                    ci = _queue.front().second;
+                    _queue.dequeue();
+                }
+            } else ++ci;
+        } else {
+            traversed[ci] = true;
+            out << ci+1 << ' ';
+            _queue.enqueue({ci, 0});
+            if (ci+1!=num)
+            {
+                ++ci;
+            } else {
+                _iter = _queue.front().first;
+                ci = _queue.front().second;
+                _queue.dequeue();
+            }
+        }
+    }
+    out << std::endl;
     return out;
 }
 
 template<typename Tp, size_t num, bool bidirectional, bool is_weighted>
 std::ostream &Adjacent_Matrix<Tp, num, bidirectional, is_weighted>::DFS(std::ostream &out, const size_t &begin) {
-    size_t _iter = static_cast<ssize_t>(begin) - 1;
-    std::cout <<  "breadth first search on graph:" <<std::endl << begin << ' ';
+    size_t _iter = begin - 1;
+    std::cout <<  "depth first search on graph:" <<std::endl << begin << ' ';
     bool traversed[num];
     traversed[_iter] = true;
 
@@ -150,19 +184,24 @@ std::ostream &Adjacent_Matrix<Tp, num, bidirectional, is_weighted>::DFS(std::ost
 
     while (true)
     {
-        if (Container[_iter][ci]==0&&traversed[ci]== true) {
-            if (ci + 1 == num) {
+        if (Container[_iter][ci]==0&&traversed[ci]== true)
+        {
+            if (ci + 1 == num)
+            {
                 if (_stack.empty()) break;
-                else {
+                else
+                {
                     _iter = _stack.top().first;
                     ci = _stack.top().second;
                     _stack.pop();
                 }
-            } else { ++ci; }
+            } else ++ci;
         } else {
-            _iter = Container[_iter][ci];
             if (ci+1!=num) _stack.push({_iter, ci+1});
-            out << _iter << ' ';
+            _iter = Container[_iter][ci];
+            ci = 0;
+            out << _iter+1 << ' ';
+            traversed[_iter] = true;
         }
     }
     out << std::endl;

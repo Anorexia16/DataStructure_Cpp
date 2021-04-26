@@ -98,6 +98,34 @@ V_Tp AVL_Tree<K_Tp, V_Tp>::search(const K_Tp &key) const
 }
 
 template<typename K_Tp, typename V_Tp>
+bool AVL_Tree<K_Tp, V_Tp>::exist(const K_Tp &) const {
+    if (this->Head == nullptr) return V_Tp{};
+    K_Tp _temp = this->Head->Key;
+    for (AVL_Node *_ptr_iterator {this->Head};;)
+    {
+        if (_temp == key)
+        {
+            return true;
+        } else if (_temp > key) {
+            if (_ptr_iterator->Right == nullptr)
+            {
+                return false;
+            } else {
+                _ptr_iterator = _ptr_iterator->Right;
+            }
+        } else {
+            if (_ptr_iterator->Left == nullptr)
+            {
+                return false;
+            } else {
+                _ptr_iterator = _ptr_iterator->Left;
+            }
+        }
+        _temp = _ptr_iterator->Key;
+    }
+}
+
+template<typename K_Tp, typename V_Tp>
 std::vector<V_Tp> AVL_Tree<K_Tp, V_Tp>::ascend() const
 {
     size_t const _size = this->Size;

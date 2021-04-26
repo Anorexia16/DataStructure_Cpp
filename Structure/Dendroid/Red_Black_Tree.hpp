@@ -1,214 +1,179 @@
 #ifndef DATASTRUCTURE_RED_BLACK_TREE_HPP
 #define DATASTRUCTURE_RED_BLACK_TREE_HPP
 
-#include <vector>
-#include "../Assistance/Storage_Unit.hpp"
-
-enum Rb_Color {Red= 1, Black = 0};
+#include "../Linear/Stack_Chain.hpp"
 
 template<typename K_Tp, typename V_Tp>
-class Rb_Node {
-public:
+struct Rb_Node
+{
     Rb_Node(K_Tp const &, V_Tp const &);
 
-    Pair_Unit<K_Tp, V_Tp> Container;
+    V_Tp Value;
 
-    Rb_Color Color;
+    K_Tp Key;
 
-    Rb_Node *Left;
+    bool Red;
+
+    Rb_Node *Father;
 
     Rb_Node *Right;
 
-    Rb_Node *Father;
+    Rb_Node *Left;
 };
 
 template<typename K_Tp, typename V_Tp>
-class Rb_Tree {
-public:
-    explicit Rb_Tree(std::vector<Pair_Unit<K_Tp, V_Tp>> const &);
+Rb_Node<K_Tp, V_Tp>::Rb_Node(const K_Tp &key, const V_Tp &value)
+:Value{value}, Key{key}, Red{true}, Father{nullptr}, Right{nullptr}, Left{nullptr} {}
 
-    Rb_Node<K_Tp, V_Tp> *search(K_Tp &&) const;
+template<typename K_Tp, typename V_Tp>
+class Rb_Tree
+{
+public:
+    explicit Rb_Tree();
+
+    V_Tp search(K_Tp const &) const;
+
+    bool exist(K_Tp const &) const;
 
     void insert(K_Tp const &, V_Tp const &);
 
     void erase(K_Tp const &);
 
 protected:
-    void erase_node(Rb_Node<K_Tp, V_Tp> *);
+    void insert_fixup(Rb_Node<K_Tp, V_Tp> &);
+
+    void erase_fixup(Rb_Node<K_Tp, V_Tp> &);
 
     void l_rotate(Rb_Node<K_Tp, V_Tp> &);
 
     void r_rotate(Rb_Node<K_Tp, V_Tp> &);
 
-    void insert_fix(Rb_Node<K_Tp, V_Tp> *);
-
-    void erase_fix(Rb_Node<K_Tp,V_Tp> *, Rb_Node<K_Tp,V_Tp> *);
-
     Rb_Node<K_Tp, V_Tp> *Root;
 };
 
 template<typename K_Tp, typename V_Tp>
-Rb_Node<K_Tp, V_Tp>::Rb_Node(K_Tp const &key, V_Tp const &value)
-:Container{key, value}, Father{nullptr}, Right{nullptr}, Left{nullptr}, Color{Red} {}
+Rb_Tree<K_Tp, V_Tp>::Rb_Tree()
+:Root{nullptr} {}
 
 template<typename K_Tp, typename V_Tp>
-Rb_Tree<K_Tp, V_Tp>::Rb_Tree(std::vector<Pair_Unit<K_Tp, V_Tp>> const &vec)
-:Root{nullptr} {
-    for(auto const &iter: vec) {
-        this->insert(iter.Key, iter.Value);
-    }
-}
+V_Tp Rb_Tree<K_Tp, V_Tp>::search(const K_Tp &key) const {
+    if (Root == nullptr) return V_Tp{};
 
-template<typename K_Tp, typename V_Tp>
-Rb_Node<K_Tp, V_Tp> *Rb_Tree<K_Tp, V_Tp>::search(K_Tp &&key) const{
-    if (this->Root == nullptr) return nullptr;
-    for(Rb_Node<K_Tp, V_Tp> *_iter {this->Root};;) {
-        if (_iter->Container.Key == key) return _iter;
-        else if (_iter->Container.Key > key) {
-            if (_iter->Right == nullptr) return nullptr;
-            else _iter = _iter->Right;
+    for(Rb_Node<K_Tp, V_Tp> *iterator = Root;;)
+    {
+        if(iterator->Key == key) return iterator->Value;
+        else if (iterator->Key > key)
+        {
+            if(iterator->Left != nullptr) iterator = iterator->Left;
+            else return V_Tp{};
         } else {
-            if (_iter->Left == nullptr) return nullptr;
-            else _iter = _iter->Left;
+            if (iterator->Right != nullptr) iterator = iterator->Right;
+            else return V_Tp{};
         }
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-void Rb_Tree<K_Tp, V_Tp>::insert(K_Tp const &key, V_Tp const &value) {
-    auto *_node = new Rb_Node<K_Tp, V_Tp> {key, value};
+bool Rb_Tree<K_Tp, V_Tp>::exist(const K_Tp &key) const {
+    if (Root == nullptr) return true;
 
-    if (this->Root == nullptr) {
-        _node->Color = Black;
-        this->Root = _node;
-        return;
-    }
-
-    for(Rb_Node<K_Tp, V_Tp> *_ptr = {this->Root};;) {
-        if (key == _ptr->Container.Key) {
-            _ptr->Container.Value = value;
-            return;
-        } else if (key < _ptr->Container.Key) {
-            if (_ptr->Left != nullptr) _ptr = _ptr->Left;
-            else {
-                _node->Father = _ptr;
-                _ptr->Left = _node;
-                if (_node->Father->Color == Red) insert_fix(_node);
-                return;
-            }
+    for(Rb_Node<K_Tp, V_Tp> *iterator = Root;;)
+    {
+        if(iterator->Key == key) return iterator->Value;
+        else if (iterator->Key > key)
+        {
+            if(iterator->Left != nullptr) iterator = iterator->Left;
+            else return false;
         } else {
-            if (_ptr->Right != nullptr) _ptr = _ptr->Right;
-            else {
-                _node->Father = _ptr;
-                _ptr->Right = _node;
-                if (_node->Father->Color == Red) insert_fix(_node);
-                return;
-            }
+            if (iterator->Right != nullptr) iterator = iterator->Right;
+            else return false;
         }
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-void Rb_Tree<K_Tp, V_Tp>::erase(K_Tp const &key) {
-    if (this->Root == nullptr) {
+void Rb_Tree<K_Tp, V_Tp>::insert(const K_Tp &key, const V_Tp &value) {
+    if (this->Head == nullptr) {
+        this->Head = new Rb_Node<K_Tp, V_Tp> {key, value};
         return;
     }
 
-    Rb_Node<K_Tp, V_Tp> *_ptr = {this->Root};
-    while(true) {
-        if (key == _ptr->Container.Key) {
+    for(Rb_Node<K_Tp, V_Tp> *_ptr = this->Head;;)
+    {
+        if (key == _ptr->Key)
+        {
+            _ptr->Value = value;
             break;
-        } else if (key < _ptr->Container.Key) {
+        } else if (key < _ptr->Key) {
             if (_ptr->Left != nullptr) _ptr = _ptr->Left;
             else {
-                return;
+                _ptr->Left = new Rb_Node<K_Tp, V_Tp> {key, value};
+                if (_ptr->Red) insert_fixup(*_ptr->Left);
+                break;
             }
         } else {
             if (_ptr->Right != nullptr) _ptr = _ptr->Right;
             else {
-                return;
+                _ptr->Right = new Rb_Node<K_Tp, V_Tp> {key, value};
+                if (_ptr->Red) insert_fixup(*_ptr->Right);
+                break;
             }
         }
     }
-    erase_node(_ptr);
 }
 
 template<typename K_Tp, typename V_Tp>
-void Rb_Tree<K_Tp, V_Tp>::erase_node(Rb_Node<K_Tp, V_Tp> *_ptr) {
-    if(_ptr->Left == nullptr && _ptr->Right == nullptr) {
-        if (_ptr->Father == nullptr) {
-            this->Root == nullptr;
-        } else {
-            Rb_Node<K_Tp, V_Tp> *bp =_ptr->Father->Left == _ptr ? _ptr->Father->Right : _ptr->Left;
-            _ptr->Father->Right == _ptr? _ptr->Father->Right = nullptr: _ptr->Father->Left = nullptr;
-            if(_ptr->Color == Black && (bp == nullptr || (bp->Left != nullptr || bp->Right != nullptr))) this->erase_fix(nullptr, _ptr->Father);
+void Rb_Tree<K_Tp, V_Tp>::erase(const K_Tp &key) {
+
+}
+
+template<typename K_Tp, typename V_Tp>
+void Rb_Tree<K_Tp, V_Tp>::insert_fixup(Rb_Node<K_Tp, V_Tp> &node) {
+    Rb_Node<K_Tp, V_Tp> *np = &node;
+    Rb_Node<K_Tp, V_Tp> *gp = np->Father->Father;
+    Rb_Node<K_Tp, V_Tp> *pp = np->Father;
+    Rb_Node<K_Tp, V_Tp> *up = gp->Left == pp? gp->Right: gp->Left;
+
+    while (true) {
+        if (up != nullptr && up->Red) {
+            break;
         }
-    } else if (_ptr->Left == nullptr) {
-        if (_ptr->Father == nullptr) {
-            this->Root = _ptr->Right;
-        } else {
-            _ptr->Father->Right == _ptr ? _ptr->Father->Right = _ptr->Right : _ptr->Father->Left = _ptr->Right;
-            _ptr->Right->Father = _ptr->Father;
-        }
-        if(_ptr->Color == Black) erase_fix(_ptr->Left, _ptr->Father);
-    } else if (_ptr->Right == nullptr) {
-        if (_ptr->Father == nullptr) {
-            this->Root = _ptr->Left;
-        } else {
-            _ptr->Father->Right == _ptr ? _ptr->Father->Right = _ptr->Left: _ptr->Father->Left = _ptr->Left;
-            _ptr->Left->Father = _ptr->Father;
-        }
-        if(_ptr->Color == Black) erase_fix(_ptr->Right, _ptr->Father);
-    } else {
-        Rb_Node<K_Tp, V_Tp> *_iter {_ptr->Right};
-        while(_iter->Left != nullptr) {
-            _iter = _iter->Left;
-        }
-        _ptr->Container = _iter->Container;
-        erase_node(_iter);
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-void Rb_Tree<K_Tp, V_Tp>::insert_fix(Rb_Node<K_Tp, V_Tp> *ptr) {
-
-}
-
-template<typename K_Tp, typename V_Tp>
-void Rb_Tree<K_Tp, V_Tp>::erase_fix(Rb_Node<K_Tp,V_Tp> *cp, Rb_Node<K_Tp, V_Tp> *pp) {
+void Rb_Tree<K_Tp, V_Tp>::erase_fixup(Rb_Node<K_Tp, V_Tp> &node) {
 
 }
 
 template<typename K_Tp, typename V_Tp>
 void Rb_Tree<K_Tp, V_Tp>::l_rotate(Rb_Node<K_Tp, V_Tp> &node) {
-    Rb_Node<K_Tp,V_Tp> *_rc = node.Right;
-    node.Right = _rc->Left;
-    if (_rc->Left != nullptr) _rc->Left->Father = &node;
-    _rc->Father = node.Father;
-    if (node.Father != nullptr)
-        node.Father->Left == &node ? node.Father->Left=_rc : node.Father->Right=_rc;
-    _rc->Left = &node;
-    node.Father = _rc;
-    if (this->Root == &node) this->Root = _rc;
+    Rb_Node<K_Tp, V_Tp> &rc = *node.Right;
+    node.Right = rc.Left;
+    if (rc.Left != nullptr) rc.Left->Father = &node;
+    rc.Father = node.Father;
+    rc.Left = &node;
+    if (node.Father != nullptr) {
+        node.Father->Left == &node? node.Father->Left=&rc: node.Father->Right=&rc;
+    } else {
+        this->Root = &rc;
+    }
+    node.Father = &rc;
 }
 
 template<typename K_Tp, typename V_Tp>
 void Rb_Tree<K_Tp, V_Tp>::r_rotate(Rb_Node<K_Tp, V_Tp> &node) {
-    Rb_Node<K_Tp, V_Tp> *_lc = node.Left;
-    node.Left = _lc == nullptr ? nullptr:_lc->Right;
-    if (_lc->Right != nullptr) _lc->Right->Father = &node;
-    _lc->Father = node.Father;
-    if (node.Father != nullptr)
-        node.Father->Left == &node ? node.Father->Left=_lc : node.Father->Right=_lc;
-    _lc->Right = &node;
-    node.Father = _lc;
+    Rb_Node<K_Tp, V_Tp> &lc = *node.Left;
+    node.Left = lc.Right;
+    if (lc.Right != nullptr) lc.Right->Father = &node;
+    lc.Father = node.Father;
+    lc.Right = &node;
+    if (node.Father != nullptr) {
+        node.Father->Left == &node? node.Father->Left=&lc: node.Father->Right=&lc;
+    } else {
+        this->Root = &lc;
+    }
+    node.Father = &lc;
 }
-
-
-template<typename kt, typename vt>
-Rb_Tree<kt, vt> make_rb(std::vector<Pair_Unit<kt, vt>> const &vec) {
-    return Rb_Tree<kt, vt> {vec};
-}
-
 
 #endif //DATASTRUCTURE_RED_BLACK_TREE_HPP
