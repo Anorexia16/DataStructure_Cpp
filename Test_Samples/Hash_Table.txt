@@ -13,8 +13,8 @@ int main() {
     std::cout << A[0] << std::endl;
     std::cout << (A[2] == 13) << std::endl;
     A.remove(2);
-    A.remove(7);
+    A.merge(7);
     std::cout << (A.exist(16)) << std::endl;
     std::cout << (A.exist(1)) << std::endl;
-    std::cout << A.size();
+    std::cout << A.index();
 }

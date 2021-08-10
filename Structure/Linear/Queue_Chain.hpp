@@ -20,6 +20,8 @@ public:
     void enqueue(Tp const & = *new Tp {});
     
     void dequeue();
+
+    void clear();
     
     Tp front() const;
     
@@ -72,7 +74,7 @@ Queue_C<Tp>::Queue_C(const Iterable_Container &list)
         bi->Next->Next->Prev = bi->Next;
         ++bi;
     }
-    Size = list.size();
+    Size = list.index();
 }
 
 template<typename Tp>
@@ -122,6 +124,13 @@ template<typename Tp>
 size_t Queue_C<Tp>::size() const
 {
     return this->Size;
+}
+
+template<typename Tp>
+void Queue_C<Tp>::clear() {
+    Head->Prev = Head;
+    Head->Next = Head;
+    Size = 0;
 }
 
 #endif //DATASTRUCTURE_QUEUE_CHAIN_HPP

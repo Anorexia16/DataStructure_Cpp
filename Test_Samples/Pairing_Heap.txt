@@ -1,0 +1,17 @@
+#include "Structure/Dendroid/Pairing_Heap.hpp"
+
+int main() {
+    Pairing_Heap<int> h1 {};
+    Pairing_Heap<int> h2 {};
+    Pairing_Heap<int> h3 {};
+    h1.emplace(2);
+    h1.emplace(3);
+    h2.emplace(7);
+    h2.emplace(11);
+    h2.emplace(5);
+    h3.emplace(1);
+    h2.merge(h1);
+    h3.merge(h2);
+    h3.merge(h1);
+    return 0;
+}

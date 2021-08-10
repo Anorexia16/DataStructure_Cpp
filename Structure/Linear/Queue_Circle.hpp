@@ -80,7 +80,7 @@ Queue_CC<Tp>::Queue_CC(const Iterable_Container &cont, const size_t &capacity)
 {
     First->Next = First;
     First->Prev = First;
-    size_t size = cont.size();
+    size_t size = cont.index();
     for (auto const &iterator:cont)
     {
         First->Next = new NodeB<Tp>{iterator, First, First->Next};

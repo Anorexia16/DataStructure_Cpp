@@ -27,4 +27,14 @@ bool any(Args const &... args)
     return (args||...);
 }
 
+template<class cls>
+cls &copy(cls const &source) {
+    return *new cls {source};
+}
+
+template<class cls>
+cls &&move(cls &&source) {
+    return cls{std::forward<>(source)};
+}
+
 #endif //DATASTRUCTURE_OPERATOR_HPP

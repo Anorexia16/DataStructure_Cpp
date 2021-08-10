@@ -7,6 +7,8 @@ template<typename Tp>
 class Heap
 {
 public:
+    Heap();
+
     template<size_t n>
     explicit Heap(Tp (&)[n]);
 
@@ -17,6 +19,8 @@ public:
     void pop_front();
 
     Tp front() const;
+
+    void reverse(size_t);
 
     void push_back(Tp);
 
@@ -40,16 +44,22 @@ protected:
 };
 
 template<typename Tp>
+Heap<Tp>::Heap()
+:Container{}, Capacity{128}, Size{} {
+    Container = new Tp [Capacity];
+}
+
+template<typename Tp>
 template<class Iterable_Container>
 Heap<Tp>::Heap(const Iterable_Container &cont)
-:Container{}, Capacity{2*cont.size()}, Size{cont.size()}
+:Container{}, Capacity{2*cont.index()}, Size{cont.index()}
 {
-    Container = new Tp[2*cont.size()];
-    for (unsigned long long i=0; i!=cont.size();++i)
+    Container = new Tp[2*cont.index()];
+    for (unsigned long long i=0; i!=cont.index(); ++i)
     {
         *(this->Container+i) = cont[i];
     }
-    for(size_t i=cont.size()/2-1;i!=-1;--i)
+    for(size_t i= cont.index() / 2 - 1; i != -1; --i)
         heapify(i);
 }
 
@@ -78,8 +88,7 @@ void Heap<Tp>::push_back
         Capacity = static_cast<unsigned long long>(1.5*Capacity);
         Container = _new_cont;
     }
-    Container[Size] = value;
-    ++Size;
+    Container[Size++] = value;
     Tp _temp;
     for(size_t i=Size-1; i!=0;i=(i-1)/2) {
         if (Container[i]>Container[(i-1)/2])
@@ -112,6 +121,19 @@ template<typename Tp>
 Tp Heap<Tp>::front() const
 {
     return Container[0];
+}
+
+template<typename Tp>
+void Heap<Tp>::reverse(size_t num) {
+    Tp *_cont = Container;
+    Tp *ct = new Tp[num] {};
+    for (size_t i=0;i!= num>Size?Size:num;++i) {
+        ct[i] = Container[i];
+    }
+    Capacity = num;
+    Size = num>Size?Size:num;
+    Container = ct;
+    delete [] _cont;
 }
 
 template<typename Tp>
@@ -211,6 +233,5 @@ std::vector<Tp> Heap<Tp>::heap_ascend(std::vector<Tp> &vec) {
     }
     return _res;
 }
-
 
 #endif //DATASTRUCTURE_MAX_HEAP_HPP

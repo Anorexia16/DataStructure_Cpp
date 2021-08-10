@@ -1,5 +1,5 @@
-#ifndef DATASTRUCTURE_GRAPH_ADJACENT_LIST_HPP
-#define DATASTRUCTURE_GRAPH_ADJACENT_LIST_HPP
+#ifndef DATASTRUCTURE_ADJACENT_LIST_HPP
+#define DATASTRUCTURE_ADJACENT_LIST_HPP
 
 #include <iostream>
 #include "../Linear/Stack_Chain.hpp"
@@ -18,11 +18,11 @@ struct Gn
 };
 
 template<size_t num, bool bidirectional = true, bool is_weighted = false>
-struct Adjacent_List: public Graph<size_t>
+struct Adjacent_List: public Graph
 {
     Adjacent_List();
 
-    [[nodiscard]] size_t vertices() const override;
+    [[nodiscard]] constexpr size_t vertices() const override;
 
     [[nodiscard]] size_t edges() const override;
 
@@ -34,13 +34,13 @@ struct Adjacent_List: public Graph<size_t>
 
     [[nodiscard]] bool exist_edge(size_t const &, size_t const &) const override;
 
-    [[nodiscard]] bool directed() const override;
+    [[nodiscard]] constexpr bool directed() const override;
 
-    [[nodiscard]] bool weighted() const override;
+    [[nodiscard]] constexpr bool weighted() const override;
 
-    void insert_edge(size_t const &, size_t const &, ssize_t const & = -1);
+    void insert_edge(size_t const &, size_t const &, size_t const &) override;
 
-    void remove_edge(size_t const &, size_t const &);
+    void remove_edge(size_t const &, size_t const &) override;
 
     std::ostream &DFS(std::ostream &, size_t const &);
 
@@ -54,7 +54,7 @@ Adjacent_List<num, bidirectional, is_weighted>::Adjacent_List()
 :Container{} {}
 
 template<size_t num, bool bidirectional, bool is_weighted>
-size_t Adjacent_List<num, bidirectional, is_weighted>::vertices() const
+constexpr size_t Adjacent_List<num, bidirectional, is_weighted>::vertices() const
 {
     return num;
 }
@@ -74,13 +74,13 @@ template<size_t num, bool bidirectional, bool is_weighted>
 size_t Adjacent_List<num, bidirectional, is_weighted>::degree(const size_t &i) const
 {
     size_t n = 0;
-    for(Gn *iter = Container[i-1].Bro; iter->Bro != nullptr; iter=iter->Bro) ++n;
+    for(Gn *iter = Container[i].Bro; iter->Bro != nullptr; iter=iter->Bro) ++n;
     if (!bidirectional)
     {
         for (int j = 0; j != num; ++j)
         {
             for (Gn *iter = Container[j].Bro; iter != nullptr; iter = iter->Bro)
-                if (iter->At == i-1)
+                if (iter->At == i)
                 {
                     ++n;
                     break;
@@ -97,7 +97,7 @@ size_t Adjacent_List<num, bidirectional, is_weighted>::in_degree(const size_t &i
     for(int j=0; j!=num; ++j)
     {
         for(Gn *iter = Container[j].Bro; iter != nullptr; iter=iter->Bro)
-            if (iter->At ==i-1)
+            if (iter->At ==i)
             {
                 ++n;
                 break;
@@ -110,48 +110,48 @@ template<size_t num, bool bidirectional, bool is_weighted>
 size_t Adjacent_List<num, bidirectional, is_weighted>::out_degree(const size_t &i) const
 {
     size_t n = 0;
-    for(Gn *iter = Container[i-1].Bro; iter != nullptr; iter=iter->Bro) ++n;
+    for(Gn *iter = Container[i].Bro; iter != nullptr; iter=iter->Bro) ++n;
     return n;
 }
 
 template<size_t num, bool bidirectional, bool is_weighted>
 bool Adjacent_List<num, bidirectional, is_weighted>::exist_edge(const size_t &i, const size_t &j) const
 {
-    for (Gn *iter = Container[i-1].Bro; iter != nullptr; iter = iter->Bro)
-        if (iter->At == j-1)
+    for (Gn *iter = Container[i].Bro; iter != nullptr; iter = iter->Bro)
+        if (iter->At == j)
             return true;
     return false;
 }
 
 template<size_t num, bool bidirectional, bool is_weighted>
-bool Adjacent_List<num, bidirectional, is_weighted>::directed() const
+constexpr bool Adjacent_List<num, bidirectional, is_weighted>::directed() const
 {
     return !bidirectional;
 }
 
 template<size_t num, bool bidirectional, bool is_weighted>
-bool Adjacent_List<num, bidirectional, is_weighted>::weighted() const
+constexpr bool Adjacent_List<num, bidirectional, is_weighted>::weighted() const
 {
     return is_weighted;
 }
 
 template<size_t num, bool bidirectional, bool is_weighted>
-void Adjacent_List<num, bidirectional, is_weighted>::insert_edge(const size_t &i, const size_t &j, const ssize_t &weight)
+void Adjacent_List<num, bidirectional, is_weighted>::insert_edge(const size_t &i, const size_t &j, const size_t &weight)
 {
     Gn *_new = new Gn {};
-    _new->At = static_cast<ssize_t>(j-1);
-    _new->Weight = is_weighted? weight: 1;
+    _new->At = static_cast<ssize_t>(j);
+    _new->Weight = weight;
     _new->Bro = nullptr;
-    Gn *pos = &this->Container[i-1];
+    Gn *pos = &this->Container[i];
     for (;pos->Bro!=nullptr;pos=pos->Bro);
     pos->Bro = _new;
     if (bidirectional)
     {
         Gn *_new2 = new Gn{};
-        _new2->At = static_cast<ssize_t>(i)-1;
-        _new2->Weight = is_weighted ? weight: 1;
+        _new2->At = static_cast<ssize_t>(i);
+        _new2->Weight = weight;
         _new2->Bro = nullptr;
-        Gn *pos2 = &this->Container[j-1];
+        Gn *pos2 = &this->Container[j];
         for (;pos2->Bro!=nullptr;pos2=pos2->Bro);
         pos2->Bro = _new;
     }
@@ -160,16 +160,16 @@ void Adjacent_List<num, bidirectional, is_weighted>::insert_edge(const size_t &i
 template<size_t num, bool bidirectional, bool is_weighted>
 void Adjacent_List<num, bidirectional, is_weighted>::remove_edge(const size_t &i, const size_t &j)
 {
-    for (Gn *iter = &Container[i-1]; iter->Bro != nullptr; iter = iter->Bro)
-        if (iter->Bro->At == j - 1)
+    for (Gn *iter = &Container[i]; iter->Bro != nullptr; iter = iter->Bro)
+        if (iter->Bro->At == j)
         {
             iter->Bro = iter->Bro->Bro;
             break;
         }
     if (bidirectional)
     {
-        for (Gn *iter = &Container[j-1]; iter->Bro != nullptr; iter = iter->Bro)
-            if (iter->Bro->At == i - 1)
+        for (Gn *iter = &Container[j]; iter->Bro != nullptr; iter = iter->Bro)
+            if (iter->Bro->At == i)
             {
                 iter->Bro = iter->Bro->Bro;
                 break;
@@ -183,7 +183,7 @@ std::ostream &Adjacent_List<num, bidirectional, is_weighted>::DFS(std::ostream &
     bool traversed[num];
     ssize_t _iter = static_cast<ssize_t>(begin)-1;
 
-    traversed[begin - 1] = true;
+    traversed[begin] = true;
     Stack_C<Gn*> _stack {};
     Gn *pi = Container[_iter].Bro;
 
@@ -199,7 +199,7 @@ std::ostream &Adjacent_List<num, bidirectional, is_weighted>::DFS(std::ostream &
         {
             _iter = pi->At;
             traversed[_iter] = true;
-            std::cout << _iter+1 << ' ';
+            std::cout << _iter << ' ';
             if (Container[_iter].Bro != nullptr)
             {
                 pi = Container[_iter].Bro;
@@ -222,7 +222,7 @@ std::ostream &Adjacent_List<num, bidirectional, is_weighted>::BFS(std::ostream &
     bool traversed[num];
     size_t _iter;
 
-    traversed[begin-1] = true;
+    traversed[begin] = true;
     Queue_C<size_t> _queue {};
     for(Gn *iter=Container[begin-1].Bro; iter != nullptr; iter=iter->Bro)
         _queue.enqueue(iter->At);
@@ -230,7 +230,7 @@ std::ostream &Adjacent_List<num, bidirectional, is_weighted>::BFS(std::ostream &
     while(!_queue.empty())
     {
         _iter = _queue.front();
-        out << _iter +1 << ' ';
+        out << _iter << ' ';
         _queue.dequeue();
         for(Gn *iter=Container[_iter].Bro; iter != nullptr; iter=iter->Bro)
         {
@@ -245,4 +245,4 @@ std::ostream &Adjacent_List<num, bidirectional, is_weighted>::BFS(std::ostream &
     return out;
 }
 
-#endif //DATASTRUCTURE_GRAPH_ADJACENT_LIST_HPP
+#endif //DATASTRUCTURE_ADJACENT_LIST_HPP

@@ -43,7 +43,7 @@ int main() {
 
     t = (B_Plus_Tree<int, int, 5>::Index_Node*)_tree2.Root;
     [[maybe_unused]]auto search1 = _tree2.search(-21);
-    [[maybe_unused]]auto node = ((B_Plus_Tree<int, int, 5>::Data_Node*)((B_Plus_Tree<int, int, 5>::Index_Node*)t->Paths[0])->Paths[0]);
+    [[maybe_unused]]auto kwargs = ((B_Plus_Tree<int, int, 5>::Data_Node*)((B_Plus_Tree<int, int, 5>::Index_Node*)t->Paths[0])->Paths[0]);
     [[maybe_unused]] auto search_2 =_tree2.search(-22);
 
     auto Leftist1 = make_LT({40, 10, 20, 30, 5}, true);

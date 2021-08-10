@@ -111,6 +111,7 @@ void Leftist_Tree<cls>::pop() {
         this->Top->Left->Father = nullptr;
         this->Top = this->Top->Left;
     } else {
+        this->Top->Left->Father = nullptr;
         this->Top = &this->merge_algorithm(*this->Top->Left, *this->Top->Right);
     }
     --this->Size;

@@ -84,18 +84,11 @@ std::vector<long double> gini_vec(DT_Node const &node)
     size_t const items = node.Socket.size();
     _res.reserve(items);
 
-    double belongs;
-    double not_belongs;
-    double b_truth;
-    double nb_truth;
-    double b_false;
-    double nb_false;
-    bool using_leq;
-    ssize_t right;
-    ssize_t left;
+    double belongs, not_belongs, b_truth, nb_truth, b_false, nb_false;
+    bool using_leq, classification;
+    ssize_t right, left;
     size_t column;
     long double gini;
-    bool classification;
 
     for (size_t fci=0; fci != items; ++fci)
     {

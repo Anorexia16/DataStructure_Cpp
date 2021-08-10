@@ -79,7 +79,7 @@ Deque_C<Tp>::Deque_C(const Iterable_Container &list)
         bi->Next->Next->Prev = bi->Next;
         ++bi;
     }
-    this->Size = list.size();
+    this->Size = list.index();
 }
 
 template<typename Tp>

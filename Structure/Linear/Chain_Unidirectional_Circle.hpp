@@ -1,5 +1,5 @@
-#ifndef DATASTRUCTURE_CHAIN
-#define DATASTRUCTURE_CHAIN
+#ifndef DATASTRUCTURE_CHAIN_UC
+#define DATASTRUCTURE_CHAIN_UC
 
 #include "../Abstract/Abstract_Linear_List.hpp"
 #include "../Assistance/Node_Unidirectional.hpp"
@@ -113,4 +113,4 @@ void ChainUC<T>::resize(size_t const &x)
     this->Size = x;
 }
 
-#endif //DATASTRUCTURE_CHAIN_UNIDIRECTIONAL_CIRCLE_HPP
+#endif //DATASTRUCTURE_CHAIN_UC

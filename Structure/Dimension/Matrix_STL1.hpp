@@ -106,11 +106,11 @@ cls Matrix_STL1<cls, Cont>::get_c(const size_t &column, const size_t &row) const
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
 void Matrix_STL1<cls, Cont>::resize(ssize_t const &column, ssize_t const &row)
 {
-    if ((row == -1 && column > 0) && this->Container.size() % column == 0)
-        this->resize(this->Container.size() / column, column);
-    else if ((column == -1 && row > 0) && this->Container.size() % row == 0)
-        this->resize(this->Container.size() / row, row);
-    else if ((column > 0 && row > 0) && column * row == this->Container.size()) {
+    if ((row == -1 && column > 0) && this->Container.index() % column == 0)
+        this->resize(this->Container.index() / column, column);
+    else if ((column == -1 && row > 0) && this->Container.index() % row == 0)
+        this->resize(this->Container.index() / row, row);
+    else if ((column > 0 && row > 0) && column * row == this->Container.index()) {
         this->Rows = static_cast<size_t>(row);
         this->Columns = static_cast<size_t>(column);
     } else throw;
@@ -126,7 +126,7 @@ Matrix_STL1<cls, Cont> Matrix_STL1<cls, Cont>::operator+(Matrix_STL1 const &op) 
     }
 
     Matrix_STL1<cls, Cont> res{Cont<cls>(this->size()), this->Columns, this->Rows};
-    for (auto iter = 0; iter != this->Container.size(); ++iter)
+    for (auto iter = 0; iter != this->Container.index(); ++iter)
         res.Container[iter] = this->Container[iter] + op.Container[iter];
     return res;
 }

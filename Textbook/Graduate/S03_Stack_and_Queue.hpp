@@ -130,7 +130,7 @@ std::string control_railway(std::string const &str)
 {
     Stack_C<char> _stack {};
     std::string _res {};
-    _res.reserve(str.size());
+    _res.reserve(str.index());
 
     for(auto const &iter:str)
     {

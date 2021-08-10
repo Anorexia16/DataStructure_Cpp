@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnusedLocalVariable"
 #ifndef DATASTRUCTURE_B_PLUS_TREE_HPP
 #define DATASTRUCTURE_B_PLUS_TREE_HPP
 
@@ -485,7 +483,7 @@ void B_Plus_Tree<K_Tp, V_Tp, order>::spilt(B_Plus_Tree::Node &node, const size_t
             {
                 _page->Keys[i] = IC->Keys[_idx + i];
                 _page->Paths[i] = IC->Paths[_idx + i];
-                ((Node*)_page->Paths[i])->Is_index ? static_cast<Index_Node*>(_page->Paths[i])->Father = _page:
+                ((kwargs*)_page->Paths[i])->Is_index ? static_cast<Index_Node*>(_page->Paths[i])->Father = _page:
                         static_cast<Data_Node*>(_page->Paths[i])->Father = _page;
             }
             */

@@ -1,7 +1,24 @@
 #ifndef DATASTRUCTURE_SELECT_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_SELECT_SORT_ALGORITHM_HPP
 
-#include "../../Generic_Paradigm/Iterable.hpp"
+#include <utility>
+
+template<class cls>
+concept Iterable_Container = requires (cls instance)
+{
+    instance.operator[](0);
+    instance.size();
+};
+
+template<class cls>
+concept Iterable_Iterator = requires (cls iterator)
+{
+    cls(iterator);
+    iterator.operator=(iterator);
+    iterator.operator-(-1);
+    ++iterator;
+    --iterator;
+};
 
 template<typename Tp, Iterable_Container Container>
 void select_sort(Container &container)

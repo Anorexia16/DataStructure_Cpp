@@ -1,0 +1,11 @@
+#include "Structure/Dimension/ST_Table.hpp"
+
+int main() {
+    auto c = std::array<size_t, 8> {1, 2, 3, 4, 5, 6, 7, 8};
+    auto y = make_st_table<size_t, 8, ST_OP::Max>(c);
+    auto w1 = y.get(0, 4);
+    auto w2 = y.get(1, 4);
+    auto w3 = y.get(3, 5);
+    auto w4 = y.get(4, 7);
+    return 0;
+}

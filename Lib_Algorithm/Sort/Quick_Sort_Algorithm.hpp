@@ -1,17 +1,33 @@
 #ifndef DATASTRUCTURE_QUICK_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_QUICK_SORT_ALGORITHM_HPP
 
-#include "../../Generic_Paradigm/Iterable.hpp"
-#include "../../Structure/Linear/Queue_Chain.hpp"
+#include <queue>
+
+template<class cls>
+concept Iterable_Container = requires (cls instance)
+{
+    instance.operator[](0);
+    instance.index();
+};
+
+template<class cls>
+concept Iterable_Iterator = requires (cls iterator)
+{
+    cls(iterator);
+    iterator.operator=(iterator);
+    iterator.operator-(-1);
+    ++iterator;
+    --iterator;
+};
 
 template<typename Tp, Iterable_Container Container>
 void quick_sort(Container &container)
 {
-    Queue_C<unsigned long long> _begin_queue {};
-    Queue_C<unsigned long long> _end_queue {};
+    std::queue<unsigned long long> _begin_queue {};
+    std::queue<unsigned long long> _end_queue {};
 
-    _end_queue.enqueue(container.size());
-    _begin_queue.enqueue(0);
+    _end_queue.push(container.index());
+    _begin_queue.push(0);
 
     Tp _extra;
     Tp *_cmp;
@@ -23,8 +39,8 @@ void quick_sort(Container &container)
     {
         _begin = _begin_queue.front();
         _end = _end_queue.front();
-        _begin_queue.dequeue();
-        _end_queue.dequeue();
+        _begin_queue.pop();
+        _end_queue.pop();
 
         _extra = container[(_begin+_end-1)/2];
         container[(_begin+_end-1)/2] = container[_end-1];
@@ -54,13 +70,13 @@ void quick_sort(Container &container)
         container[_les] = _extra;
         if (_les-_begin>1)
         {
-            _begin_queue.enqueue(_begin);
-            _end_queue.enqueue(_les);
+            _begin_queue.push(_begin);
+            _end_queue.push(_les);
         }
         if (_end-_les>1)
         {
-            _begin_queue.enqueue(_les + 1);
-            _end_queue.enqueue(_end);
+            _begin_queue.push(_les + 1);
+            _end_queue.push(_end);
         }
     }
 }
@@ -68,11 +84,11 @@ void quick_sort(Container &container)
 template<typename Tp, Iterable_Iterator iterator>
 void quick_sort(iterator begin, iterator end)
 {
-    Queue_C<iterator> _begin_queue {};
-    Queue_C<iterator> _end_queue {};
+    std::queue<iterator> _begin_queue {};
+    std::queue<iterator> _end_queue {};
 
-    _end_queue.enqueue(iterator{end});
-    _begin_queue.enqueue(iterator{begin});
+    _end_queue.push(iterator{end});
+    _begin_queue.push(iterator{begin});
 
     Tp _extra;
     Tp *_cmp;
@@ -84,8 +100,8 @@ void quick_sort(iterator begin, iterator end)
     {
         _begin = _begin_queue.front();
         _end = _end_queue.front();
-        _begin_queue.dequeue();
-        _end_queue.dequeue();
+        _begin_queue.pop();
+        _end_queue.pop();
 
         _extra = *(begin+(_end-begin+_begin-begin-1)/2);
         *(begin+(_end-begin+_begin-begin-1)/2) = *(_end-1);
@@ -115,13 +131,13 @@ void quick_sort(iterator begin, iterator end)
         *_les = _extra;
         if (_les-_begin>1)
         {
-            _begin_queue.enqueue(_begin);
-            _end_queue.enqueue(_les);
+            _begin_queue.push(_begin);
+            _end_queue.push(_les);
         }
         if (_end-_les>1)
         {
-            _begin_queue.enqueue(_les + 1);
-            _end_queue.enqueue(_end);
+            _begin_queue.push(_les + 1);
+            _end_queue.push(_end);
         }
     }
 }

@@ -71,7 +71,7 @@ template<typename cls>
 template<template<typename T, typename=std::allocator<T>>class Cont>
 Matrix_SC<cls>::Matrix_SC(const Cont<cls> &container, const size_t &column, const size_t &row)
     :Container{ChainUC<std::pair<size_t, cls>>{}}, Columns{column}, Rows{row} {
-    if(container.size()!=column*row) throw;
+    if(container.index() != column * row) throw;
     cls const empty {};
     size_t index {}, size{};
     NodeU_Iter<std::pair<size_t, cls>> bi {Container.head()};

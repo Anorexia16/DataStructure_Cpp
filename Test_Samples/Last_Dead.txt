@@ -1,0 +1,10 @@
+#include "Lib_Algorithm/OI/Shooting.hpp"
+
+int main() {
+    auto ca = exp<600, 10000>();
+    std::vector<size_t> turns {};
+    turns.reserve(ca.size());
+    for (size_t i=0;i!=ca.size();++i) turns.emplace_back
+    (static_cast<size_t>(ca[i].turns));
+    return 0;
+}

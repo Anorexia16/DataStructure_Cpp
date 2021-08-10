@@ -448,7 +448,7 @@ void pop_min_circle(ChainUC<cls> &&op)
 template<typename Freq_Node_Iter, typename Freq_Chain, typename Freq_Node>
 void Locate(Freq_Chain &&op, size_t const &pos)
 {
-    if (pos > op.size()) throw;
+    if (pos > op.index()) throw;
     Freq_Node_Iter scan_iterator{op.front()};
     for (auto iter = 0; iter != pos; ++iter) ++scan_iterator;
 

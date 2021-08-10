@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include "Lib_Algorithm/Sort/Quick_Sort_Algorithm.hpp"
+#include "Lib_Algorithm/Graph/Prim_Spanning_Tree.hpp"
+
+int main() {
+    std::vector<int> _vec {27, -2, 5, 13, 32, -7, 11, 2};
+    quick_sort<int>(std::rbegin(_vec), std::rend(_vec));
+
+    Adjacent_Matrix<8, true, true> gh{};
+    gh.insert_edge(1, 2, 4);
+    gh.insert_edge(2, 3, 12);
+    gh.insert_edge(1, 4, 6);
+    gh.insert_edge(3, 4, 9);
+    gh.insert_edge(1, 7, 7);
+    gh.insert_edge(3, 5, 1);
+    gh.insert_edge(3, 6, 2);
+    gh.insert_edge(3, 8, 10);
+    gh.insert_edge(6, 8, 7);
+    gh.insert_edge(5, 8, 8);
+    gh.insert_edge(7, 8, 14);
+    gh.insert_edge(5, 7, 11);
+    gh.insert_edge(4, 5, 13);
+    gh.insert_edge(5, 6, 5);
+    gh.insert_edge(4, 7, 2);
+
+    auto miracle = spanning_tree(gh);
+
+    std::cout << "Debug Hook" << std::endl;
+}

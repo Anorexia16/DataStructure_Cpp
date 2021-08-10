@@ -110,4 +110,4 @@ void ArrayList<T>::_index_check(int const &index) const
 }
 
 
-#endif //DATASTRUCTURE_ARRAY_LIST_HPP
+#endif //DATASTRUCTURE_ARRAY_LIST

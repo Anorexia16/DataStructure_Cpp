@@ -1,389 +1,373 @@
 #ifndef DATASTRUCTURE_AVL_TREE_HPP
 #define DATASTRUCTURE_AVL_TREE_HPP
 
-#include "../Linear/Deque_Chain.hpp"
+#include <cstdlib>
 
-template<typename K_Tp, typename V_Tp>
-class AVL_Tree
-{
-protected:
-    struct AVL_Node
-    {
-        AVL_Node(K_Tp const &, V_Tp const &);
-
-        size_t Depth;
-
-        V_Tp Value;
-
-        K_Tp Key;
-
-        AVL_Node *Father;
-
-        AVL_Node *Right;
-
-        AVL_Node *Left;
+template<typename K_Tp, typename  V_Tp>
+class AVL_Tree{
+private:
+    struct kwarg {
+        V_Tp value;
+        K_Tp key;
+        kwarg *left;
+        kwarg *right;
+        kwarg *father;
+        size_t depth;
+        V_Tp &operator*() {return value;}
     };
 
-    static std::pair<AVL_Node *, size_t> imbalance_seek(AVL_Node const &);
+    static bool unbalance(kwarg *);
 
-    static inline ssize_t bf(AVL_Node const &);
+    static size_t abs(size_t, size_t);
 
-    void LL_rotate(AVL_Node &);
+    static bool child(kwarg *);
 
-    void RR_rotate(AVL_Node &);
+    static void update(kwarg *);
 
-    void LR_rotate(AVL_Node &);
+    void insert_fix(kwarg *);
 
-    void RL_rotate(AVL_Node &);
+    void lt(kwarg *);
 
-    AVL_Node *Head;
+    void rt(kwarg *);
 
-    size_t Size;
+    kwarg *root {};
 
 public:
-    AVL_Tree();
-
-    V_Tp search(K_Tp const &) const;
-
-    bool exist(K_Tp const &) const;
-    
-    [[nodiscard]] bool empty() const;
-
-    [[nodiscard]] size_t size() const;
-
-    [[nodiscard]] std::vector<V_Tp> ascend() const;
-
     void insert(K_Tp const &, V_Tp const &);
 
-    void insert(AVL_Node &);
+    kwarg *search(K_Tp const &) const;
 
-    void erase(K_Tp const &);
+    bool exist(K_Tp const &) const;
+};
+
+template<typename Tp>
+class AVL_Tree<Tp, Tp> {
+    struct arg {
+        Tp value;
+        arg *left;
+        arg *right;
+        arg *father;
+        size_t depth;
+        Tp &operator*() {return value;}
+    };
+
+    static bool unbalance(arg *);
+
+    static size_t abs(size_t, size_t);
+
+    static bool child(arg *);
+
+    static void update(arg *);
+
+    void insert_fix(arg *);
+
+    void lt(arg *);
+
+    void rt(arg *);
+
+    arg *root {};
+
+public:
+    void insert(Tp const &);
+
+    arg *search(Tp const &) const;
+
+    bool exist(Tp const &) const;
 };
 
 template<typename K_Tp, typename V_Tp>
-AVL_Tree<K_Tp, V_Tp>::AVL_Node::AVL_Node(const K_Tp &key, const V_Tp &value)
-:Key{key},Value{value}, Depth{1}, Father{}, Left{}, Right{} {}
+bool AVL_Tree<K_Tp, V_Tp>::unbalance(AVL_Tree::kwarg *node) {
+    return abs(node->left== nullptr?0:node->left->depth,
+               node->right== nullptr?0:node->right->depth)>1;
+}
 
 template<typename K_Tp, typename V_Tp>
-AVL_Tree<K_Tp, V_Tp>::AVL_Tree()
-:Head{nullptr}, Size{} {}
+size_t AVL_Tree<K_Tp, V_Tp>::abs(size_t x, size_t y) {
+    return x>y?x-y:y-x;
+}
 
 template<typename K_Tp, typename V_Tp>
-V_Tp AVL_Tree<K_Tp, V_Tp>::search(const K_Tp &key) const
-{
-    if (this->Head == nullptr) return V_Tp{};
-    K_Tp _temp = this->Head->Key;
-    for (AVL_Node *_ptr_iterator {this->Head};;)
-    {
-        if (_temp == key)
-        {
-            return _ptr_iterator->Value;
-        } else if (_temp > key) {
-            if (_ptr_iterator->Right == nullptr)
-            {
-                return V_Tp{};
-            } else {
-                _ptr_iterator = _ptr_iterator->Right;
-            }
-        } else {
-            if (_ptr_iterator->Left == nullptr)
-            {
-                return V_Tp{};
-            } else {
-                _ptr_iterator = _ptr_iterator->Left;
-            }
-        }
-        _temp = _ptr_iterator->Key;
+bool AVL_Tree<K_Tp, V_Tp>::child(AVL_Tree::kwarg *node) {
+    return node->father->right==node;
+}
+
+template<typename K_Tp, typename V_Tp>
+void AVL_Tree<K_Tp, V_Tp>::update(AVL_Tree::kwarg *node) {
+    size_t ld, rd;
+    for(kwarg *iter=node;iter!= nullptr;iter=iter->father) {
+        ld = iter->left== nullptr?0:iter->left->depth;
+        rd = iter->right== nullptr?0:iter->right->depth;
+        iter->depth = ld>rd? ld+1: rd+1;
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-bool AVL_Tree<K_Tp, V_Tp>::exist(const K_Tp &) const {
-    if (this->Head == nullptr) return V_Tp{};
-    K_Tp _temp = this->Head->Key;
-    for (AVL_Node *_ptr_iterator {this->Head};;)
-    {
-        if (_temp == key)
-        {
-            return true;
-        } else if (_temp > key) {
-            if (_ptr_iterator->Right == nullptr)
-            {
-                return false;
-            } else {
-                _ptr_iterator = _ptr_iterator->Right;
-            }
-        } else {
-            if (_ptr_iterator->Left == nullptr)
-            {
-                return false;
-            } else {
-                _ptr_iterator = _ptr_iterator->Left;
-            }
-        }
-        _temp = _ptr_iterator->Key;
-    }
-}
-
-template<typename K_Tp, typename V_Tp>
-std::vector<V_Tp> AVL_Tree<K_Tp, V_Tp>::ascend() const
-{
-    size_t const _size = this->Size;
-    Deque_C<AVL_Node *> _cache {};
-    std::vector<V_Tp> _res {};
-    AVL_Node *_node {this->Head};
-    _res.reserve(_size);
-
-    for(size_t _idx = 0; _idx != _size; ++_idx)
-    {
-        if (_node->Left!= nullptr && _node->Right!= nullptr)
-        {
-            _cache.template emplace_back(_node->Right);
-            _res.template emplace_back(_node->Value);
-            _node = _node->Left;
-        } else if (_node->Left!= nullptr) {
-            _res.template emplace_back(_node->Value);
-            _node = _node->Left;
-        } else {
-            _res.template emplace_back(_node->Value);
-            _node = &_cache.back();
-            _cache.pop_back();
-        }
-    }
-    return _res;
-}
-
-template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::insert(K_Tp const &key, V_Tp const & value)
-{
-    auto *_node = new AVL_Node {key, value};
-    this->insert(*_node);
-}
-
-template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::insert(AVL_Tree::AVL_Node &node)
-{
-    if (this->Head == nullptr) {
-        this->Head = new AVL_Node {node};
-        ++this->Size;
+void AVL_Tree<K_Tp, V_Tp>::insert(const K_Tp &key, const V_Tp &value) {
+    if (root == nullptr) {
+        root = new kwarg {key, value, nullptr, nullptr, nullptr, 1};
         return;
     }
-    
-    K_Tp &_key = node.Key;
-    for(AVL_Node *_ptr = this->Head;;)
-    {
-        if (_key == _ptr->Key)
-        {
-            _ptr->Value = node.Value;
+    kwarg *iter = root;
+    while(true) {
+        if (iter->key==key) {
+            iter->value = value;
             return;
-        } else if (_key < _ptr->Key)
-        {
-            if (_ptr->Left != nullptr) _ptr = _ptr->Left;
-            else {
-                _ptr->Left = &node;
-                node.Father = _ptr;
-                for(AVL_Node *broad_cast = _ptr; broad_cast!= nullptr; broad_cast = broad_cast->Father)
-                {
-                    broad_cast->Depth = std::max(broad_cast->Left == nullptr ? 0:  broad_cast->Left->Depth + 1,
-                                                 broad_cast->Right == nullptr ? 0:  broad_cast->Right->Depth + 1);
-                }
-                break;
-            }
+        } if (key<iter->key) {
+            if (iter->left==nullptr) {
+                iter->left=new kwarg {key, value, nullptr, nullptr, iter, 1};
+                update(iter);
+                insert_fix(iter->left);
+                return;
+            } else iter=iter->left;
         } else {
-            if (_ptr->Right != nullptr) _ptr = _ptr->Right;
-            else {
-                _ptr = _ptr;
-                _ptr->Right = &node;
-                node.Father = _ptr;
-                for(AVL_Node * broad_cast = _ptr; broad_cast!= nullptr; broad_cast = broad_cast->Father)
-                {
-                    broad_cast->Depth = std::max(broad_cast->Left == nullptr ? 0:  broad_cast->Left->Depth,
-                                                 broad_cast->Right == nullptr ? 0:  broad_cast->Right->Depth) + 1;
-                }
-                break;
-            }
+            if (iter->right==nullptr) {
+                iter->right=new kwarg {key,value, nullptr, nullptr, iter, 1};
+                update(iter);
+                insert_fix(iter->right);
+                return;
+            } else iter=iter->right;
         }
     }
-
-    std::pair<AVL_Node *, size_t> _imbalance_info = imbalance_seek(node);
-    if (_imbalance_info.first == nullptr) return;
-
-    AVL_Node &_imbalance_node = *_imbalance_info.first;
-    switch (_imbalance_info.second)
-    {
-        case 0b00:
-            LL_rotate(_imbalance_node);
-            break;
-        case 0b01:
-            LR_rotate(_imbalance_node);
-            break;
-        case 0b10:
-            RL_rotate(_imbalance_node);
-            break;
-        case 0b11:
-            RR_rotate(_imbalance_node);
-            break;
-        default:
-            throw;
-    }
-    ++this->Size;
 }
 
 template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::erase(const K_Tp &) {
-
-}
-
-template<typename K_Tp, typename V_Tp>
-ssize_t AVL_Tree<K_Tp, V_Tp>::bf(AVL_Tree::AVL_Node const &node) {
-    return (node.Left == nullptr ? 0 : node.Left->Depth)
-            - (node.Right == nullptr ? 0 : node.Right->Depth);
-}
-
-template<typename K_Tp, typename V_Tp>
-std::pair<typename AVL_Tree<K_Tp, V_Tp>::AVL_Node *, size_t> AVL_Tree<K_Tp, V_Tp>::imbalance_seek(const AVL_Tree::AVL_Node &node) {
-    bool PL = true, GL;
-    size_t _bf;
-    AVL_Node *_res;
-
-    for(AVL_Node const *_ptr = &node;; _ptr = _ptr->Father) {
-        if (_ptr->Father == nullptr)
-        {
-            return std::pair<AVL_Node*, size_t> {nullptr, 0b00};
+typename AVL_Tree<K_Tp, V_Tp>::kwarg *AVL_Tree<K_Tp, V_Tp>::search(const K_Tp &key) const {
+    if (root == nullptr) return nullptr;
+    kwarg *iter = root;
+    while(true) {
+        if (iter->key==key) {
+            return iter;
+        } if (key<iter->key) {
+            if (iter->left==nullptr) {
+                return nullptr;
+            } else iter=iter->left;
         } else {
-            _bf = AVL_Tree::bf(*_ptr->Father);
-            if (_bf == 2 || _bf == -2) {
-                GL = _ptr->Father->Left == _ptr;
-                _res = PL? _ptr->Left : _ptr->Right;
-                break;
-            } else {
-                PL = _ptr->Father->Left == _ptr;
-            }
+            if (iter->right==nullptr) {
+                return nullptr;
+            } else iter=iter->right;
         }
     }
-    
-    size_t _condition = static_cast<size_t>(!GL) * 2 + static_cast<size_t>(!PL);
-    return std::pair<AVL_Node*, size_t> {_res, _condition};
 }
 
 template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::LL_rotate(AVL_Tree::AVL_Node &node) {
-    AVL_Node *_a = node.Father->Father;
-    AVL_Node *_b = node.Father;
-    AVL_Node *_br = _b->Right;
-    if (this->Head == _a) this->Head = _b;
-    _b->Father = _a->Father;
-    _a->Father = _b;
-    if (_b->Father != nullptr) {
-        _b->Father->Left == _a ? _b->Father->Left = _b : _b->Father->Right = _b;
-    }
-    _b->Right = _a;
-    _a->Left = _br;
-    if (_br != nullptr) _br->Father = _a;
-    _a->Depth = _b->Depth - 1;
-
-    for(AVL_Node *_bp = _b->Father;; _bp = _bp->Father) {
-        if (_bp == nullptr) break;
-        _bp->Depth = std::max(_bp->Left == nullptr ? 0:  _bp->Left->Depth,
-                              _bp->Right == nullptr ? 0:  _bp->Right->Depth) + 1;
+bool AVL_Tree<K_Tp, V_Tp>::exist(const K_Tp &key) const {
+    if (root == nullptr) return false;
+    kwarg *iter = root;
+    while(true) {
+        if (iter->key==key) {
+            return true;
+        } if (key<iter->key) {
+            if (iter->left==nullptr) {
+                return false;
+            } else iter=iter->left;
+        } else {
+            if (iter->right==nullptr) {
+                return false;
+            } else iter=iter->right;
+        }
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::RR_rotate(AVL_Tree::AVL_Node &node) {
-    AVL_Node *_a = node.Father->Father;
-    AVL_Node *_b = node.Father;
-    AVL_Node *_bl = _b->Left;
-    if (this->Head == _a) this->Head = _b;
-    _b->Father = _a->Father;
-    _a->Father = _b;
-    if (_b->Father != nullptr) {
-        _b->Father->Right == _a ? _b->Father->Right = _b : _b->Father->Left = _b;
-    }
-    _b->Left = _a;
-    _a->Right = _bl;
-    if (_bl != nullptr) _bl->Father = _a;
-    _a->Depth = _b->Depth - 1;
-
-    for(AVL_Node *_bp = _b->Father;; _bp = _bp->Father) {
-        if (_bp == nullptr) break;
-        _bp->Depth = std::max(_bp->Left == nullptr ? 0:  _bp->Left->Depth + 1,
-                              _bp->Right == nullptr ? 0:  _bp->Right->Depth + 1);
-    }
-}
-
-template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::LR_rotate(AVL_Tree::AVL_Node &node) {
-    AVL_Node *_a = node.Father->Father;
-    AVL_Node *_b = node.Father;
-    AVL_Node *_c = &node;
-    if (this->Head == _a) this->Head = _c;
-    _c->Father = _a->Father;
-    if (_c->Father != nullptr) {
-        _c->Father->Right == _a ? _c->Father->Right = _c : _c->Father->Left = _c;
-    }
-    _b->Right = _c->Left;
-    _a->Left = _c->Right;
-    _b->Father = _c;
-    _a->Father = _c;
-    if (_c->Left != nullptr) _c->Left->Father = _b;
-    if (_c->Right != nullptr) _c->Right->Father = _a;
-    _c->Left = _b;
-    _c->Right = _a;
-
-    _b->Depth -= 1;
-    _a->Depth -= 2;
-    _c->Depth = _a->Depth + 1;
-    for(AVL_Node *_bp = _c->Father;; _bp = _bp->Father) {
-        if (_bp == nullptr) break;
-        _bp->Depth = std::max(_bp->Left == nullptr ? 0:  _bp->Left->Depth + 1,
-                              _bp->Right == nullptr ? 0:  _bp->Right->Depth + 1);
+void AVL_Tree<K_Tp, V_Tp>::insert_fix(AVL_Tree::kwarg *var) {
+    kwarg *temp;
+    int df, uf{};
+    for (kwarg *iter=var;iter->father!= nullptr;iter=iter->father) {
+        df = uf;
+        uf = child(iter);
+        if (unbalance(iter->father)) {
+            switch (df + uf * 2) {
+                case 0:
+                    lt(iter);
+                    return;
+                case 1:
+                    rt(temp);
+                    lt(temp);
+                    return;
+                case 2:
+                    lt(temp);
+                    rt(temp);
+                    return;
+                default:
+                    rt(iter);
+                    return;
+            }
+        }
+        temp = iter;
     }
 }
 
 template<typename K_Tp, typename V_Tp>
-void AVL_Tree<K_Tp, V_Tp>::RL_rotate(AVL_Tree::AVL_Node &node) {
-    AVL_Node *_a = node.Father->Father;
-    AVL_Node *_b = node.Father;
-    AVL_Node *_c = &node;
-    if (this->Head == _a) this->Head = _c;
-    _c->Father = _a->Father;
-    if (_c->Father != nullptr) {
-        _c->Father->Right == _a ? _c->Father->Right = _c : _c->Father->Left = _c;
-    }
-    _b->Left = _c->Right;
-    _a->Right = _c->Left;
-    _b->Father = _c;
-    _a->Father = _c;
-    if (_c->Left != nullptr) _c->Left->Father = _a;
-    if (_c->Right != nullptr) _c->Right->Father = _b;
-    _c->Right = _b;
-    _c->Left = _a;
-
-    _b->Depth -= 1;
-    _a->Depth -= 2;
-    _c->Depth = _a->Depth + 1;
-    for(AVL_Node *_bp = _c->Father;; _bp = _bp->Father) {
-        if (_bp == nullptr) break;
-        _bp->Depth = std::max(_bp->Left == nullptr ? 0:  _bp->Left->Depth + 1,
-                              _bp->Right == nullptr ? 0:  _bp->Right->Depth + 1);
-    }
+void AVL_Tree<K_Tp, V_Tp>::lt(AVL_Tree::kwarg *var) {
+    kwarg *fv = var->father;
+    if (root==fv) root=var;
+    else child(fv) ? fv->father->right=var: fv->father->left=var;
+    var->father = fv->father;
+    fv->left = var->right;
+    if (var->right!= nullptr) var->right->father=fv;
+    fv->father = var;
+    var->right = fv;
+    update(fv);
 }
 
 template<typename K_Tp, typename V_Tp>
-bool AVL_Tree<K_Tp, V_Tp>::empty() const {
-    return this->Head == nullptr;
+void AVL_Tree<K_Tp, V_Tp>::rt(AVL_Tree::kwarg *var) {
+    kwarg *fv = var->father;
+    if (root==fv) root=var;
+    else child(fv) ? fv->father->right=var: fv->father->left=var;
+    var->father = fv->father;
+    fv->right = var->left;
+    if (var->left != nullptr) var->left->father=fv;
+    fv->father = var;
+    var->left = fv;
+    update(fv);
 }
 
-template<typename K_Tp, typename V_Tp>
-size_t AVL_Tree<K_Tp, V_Tp>::size() const {
-    return this->Size;
+template<typename Tp>
+void AVL_Tree<Tp, Tp>::insert(const Tp &elem) {
+    if (root == nullptr) {
+        root = new arg {elem, nullptr, nullptr, nullptr, 1};
+        return;
+    }
+    arg *iter = root;
+    while(true) {
+        if (iter->value==elem) {
+            return;
+        } if (elem<iter->value) {
+            if (iter->left==nullptr) {
+                iter->left=new arg {elem, nullptr, nullptr, iter, 1};
+                update(iter);
+                insert_fix(iter->left);
+                return;
+            } else iter=iter->left;
+        } else {
+            if (iter->right==nullptr) {
+                iter->right=new arg {elem, nullptr, nullptr, iter, 1};
+                update(iter);
+                insert_fix(iter->right);
+                return;
+            } else iter=iter->right;
+        }
+    }
 }
 
-template<typename kt, typename vt>
-AVL_Tree<kt, vt> make_avl(std::vector<Pair_Unit<kt, vt>> const &cont) {
-    return AVL_Tree<kt, vt> {};
+template<typename Tp>
+typename AVL_Tree<Tp, Tp>::arg *AVL_Tree<Tp, Tp>::search(const Tp &key) const {
+    if (root == nullptr) return nullptr;
+    arg *iter = root;
+    while(true) {
+        if (iter->key==key) {
+            return iter;
+        } if (key<iter->key) {
+            if (iter->left==nullptr) {
+                return nullptr;
+            } else iter=iter->left;
+        } else {
+            if (iter->right==nullptr) {
+                return nullptr;
+            } else iter=iter->right;
+        }
+    }
 }
 
+template<typename Tp>
+bool AVL_Tree<Tp, Tp>::exist(const Tp &key) const {
+    if (root == nullptr) return false;
+    arg *iter = root;
+    while(true) {
+        if (iter->key==key) {
+            return true;
+        } if (key<iter->key) {
+            if (iter->left==nullptr) {
+                return false;
+            } else iter=iter->left;
+        } else {
+            if (iter->right==nullptr) {
+                return false;
+            } else iter=iter->right;
+        }
+    }
+}
+
+template<typename Tp>
+size_t AVL_Tree<Tp, Tp>::abs(size_t x, size_t y) {
+    return x>y?x-y:y-x;
+}
+
+template<typename Tp>
+bool AVL_Tree<Tp, Tp>::unbalance(typename AVL_Tree<Tp, Tp>::arg *node) {
+    return abs(node->left== nullptr?0:node->left->depth,
+               node->right== nullptr?0:node->right->depth)>1;
+}
+
+template<typename Tp>
+bool AVL_Tree<Tp, Tp>::child(typename AVL_Tree<Tp, Tp>::arg *node) {
+    return node->father->right==node;
+}
+
+template<typename Tp>
+void AVL_Tree<Tp, Tp>::update(typename AVL_Tree<Tp, Tp>::arg *node) {
+    size_t ld, rd;
+    for(arg *iter=node;iter!= nullptr;iter=iter->father) {
+        ld = iter->left== nullptr?0:iter->left->depth;
+        rd = iter->right== nullptr?0:iter->right->depth;
+        iter->depth = ld>rd? ld+1: rd+1;
+    }
+}
+
+template<typename Tp>
+void AVL_Tree<Tp, Tp>::insert_fix(AVL_Tree<Tp, Tp>::arg *var) {
+    arg *temp;
+    int df, uf{};
+    for (arg *iter=var;iter->father!= nullptr;iter=iter->father) {
+        df = uf;
+        uf = child(iter);
+        if (unbalance(iter->father)) {
+            switch (df + uf * 2) {
+                case 0:
+                    lt(iter);
+                    return;
+                case 1:
+                    rt(temp);
+                    lt(temp);
+                    return;
+                case 2:
+                    lt(temp);
+                    rt(temp);
+                    return;
+                default:
+                    rt(iter);
+                    return;
+            }
+        }
+        temp = iter;
+    }
+}
+
+template<typename Tp>
+void AVL_Tree<Tp, Tp>::lt(AVL_Tree<Tp, Tp>::arg *var) {
+    arg *fv = var->father;
+    if (root==fv) root=var;
+    else child(fv) ? fv->father->right=var: fv->father->left=var;
+    var->father = fv->father;
+    fv->left = var->right;
+    if (var->right!= nullptr) var->right->father=fv;
+    fv->father = var;
+    var->right = fv;
+    update(fv);
+}
+
+template<typename Tp>
+void AVL_Tree<Tp, Tp>::rt(AVL_Tree<Tp, Tp>::arg *var) {
+    arg *fv = var->father;
+    if (root==fv) root=var;
+    else child(fv) ? fv->father->right=var: fv->father->left=var;
+    var->father = fv->father;
+    fv->right = var->left;
+    if (var->left != nullptr) var->left->father=fv;
+    fv->father = var;
+    var->left = fv;
+    update(fv);
+}
 
 #endif //DATASTRUCTURE_AVL_TREE_HPP

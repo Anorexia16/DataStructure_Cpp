@@ -30,7 +30,7 @@ template<class Container>
 std::vector<std::vector<size_t>> FP_Algorithm::FF(Container &&cont, const size_t &nums, const size_t &capacity)
 {
     std::vector<size_t> _capacity(nums, capacity);
-    size_t const tasks = cont.size();
+    size_t const tasks = cont.index();
     std::vector<std::vector<size_t>> _res {};
 
     for(size_t _item = 0; _item != tasks; ++_item) {
@@ -48,7 +48,7 @@ template<class Container>
 std::vector<std::vector<size_t>> FP_Algorithm::BF(Container &&cont, const size_t &nums, const size_t &capacity)
 {
     std::map<std::string , size_t> _winner_tree_map {};
-    size_t const _size = cont.size();
+    size_t const _size = cont.index();
     std::vector<std::vector<size_t>> _res {};
 
     for(size_t i = 0; i!= nums; ++i) {
@@ -70,7 +70,7 @@ template<class Container>
 std::vector<std::vector<size_t>> FP_Algorithm::FFD(Container &&cont, const size_t &nums, const size_t &capacity)
 {
     std::vector<size_t> _capacity(nums, capacity);
-    size_t const tasks = cont.size();
+    size_t const tasks = cont.index();
     std::vector<std::vector<size_t>> _res {};
 
     Leftist_Tree<Pair_Unit<size_t, size_t>> _tree {LT_Index::Height, false};
@@ -94,7 +94,7 @@ template<class Container>
 std::vector<std::vector<size_t>> FP_Algorithm::BFD(Container &&cont, const size_t &nums, const size_t &capacity)
 {
     std::map<std::string , size_t> _winner_tree_map {};
-    size_t const _size = cont.size();
+    size_t const _size = cont.index();
     std::vector<std::vector<size_t>> _res {};
 
     Leftist_Tree<Pair_Unit<size_t, size_t>> _tree {LT_Index::Height, false};
@@ -121,7 +121,7 @@ std::vector<std::vector<size_t>> FP_Algorithm::BFD(Container &&cont, const size_
 template<class Container>
 std::vector<std::vector<size_t>> FP_Algorithm::AA(Container &&cont, size_t const &capacity)
 {
-    size_t const _size = cont.size();
+    size_t const _size = cont.index();
     std::vector<size_t> _capacities {};
     std::vector<std::vector<size_t>> _res {};
     size_t _i = 0;

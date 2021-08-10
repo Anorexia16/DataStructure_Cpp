@@ -1,35 +1,46 @@
-`#pragma clang diagnostic push
-#pragma ide diagnostic ignored "UnusedLocalVariable"
 #ifndef DATASTRUCTURE_B_TREE_HPP
 #define DATASTRUCTURE_B_TREE_HPP
 
-#include <vector>
-#include "../Assistance/Storage_Unit.hpp"
+#include <cstdlib>
+
+struct seek_ans {
+    bool found {};
+    size_t pos {};
+};
+
+template<size_t n>
+constexpr size_t min_arg() {return (n+1)/2-1;}
+
+template<size_t n>
+constexpr size_t max_arg() {return n-1;}
 
 template<typename K_Tp, typename V_Tp, size_t order>
-class B_Tree
-{
-private:
-    struct Node
-    {
-        Node();
+class B_Tree{
+protected:
+    struct Node{
+        Node() = default;
 
-        std::pair<bool, size_t> seek(K_Tp const &) const;
+        K_Tp Keys[order-1] {};
 
-        Pair_Unit<K_Tp, V_Tp> Container[order] {};
+        V_Tp Args[order-1] {};
 
-        Node* Table[order + 1] {nullptr};
+        Node* Paths[order] {};
 
-        Node *Father = nullptr;
+        Node *Father {};
 
-        size_t Size = 1;
+        size_t Size {};
+
+        seek_ans seek(K_Tp const &) const;
+
+        void emplace(K_Tp const &, V_Tp const &, size_t);
     };
 
-    void destroy(Node &, size_t const &);
+    Node *Root {};
 
-    void spilt(Node &);
+    void spilt(Node &, K_Tp const &, V_Tp const &, size_t);
+
 public:
-    B_Tree();
+    B_Tree() = default;
 
     void insert(K_Tp const &, V_Tp const &);
 
@@ -38,153 +49,84 @@ public:
     bool exist(K_Tp const &) const;
 
     void erase(K_Tp const &);
-
-protected:
-    Node *Root;
 };
 
 template<typename K_Tp, typename V_Tp, size_t order>
-B_Tree<K_Tp, V_Tp, order>::Node::Node() {if (order < 3) throw;}
-
-template<typename K_Tp, typename V_Tp, size_t order>
-std::pair<bool, size_t> B_Tree<K_Tp, V_Tp, order>::Node::seek(const K_Tp &key) const
-{
+seek_ans B_Tree<K_Tp, V_Tp, order>::Node::seek(const K_Tp &key) const {
     size_t const _len = this->Size-1;
-    if (_len == 0 || key < this->Container[0].Key) return std::pair<bool, size_t> {false, 0};
-    if (this->Container[_len - 1] == key) return std::pair<bool, size_t> {true, _len - 1};
-    if (this->Container[_len - 1] < key) return std::pair<bool, size_t> {false, _len};
+    if (_len == 0 || key < this->Container[0].Key) return seek_ans {false, 0};
+    if (this->Container[_len - 1] == key) return seek_ans {true, _len - 1};
+    if (this->Container[_len - 1] < key) return seek_ans {false, _len};
 
     for(size_t _i = 0; _i < _len-1; ++ _i)
     {
-        if (key == this->Container[_i].Key)
+        if (key == Keys[_i])
         {
-            return std::pair<bool, size_t> {true, _i};
+            return seek_ans {true, _i};
         }
-        if (key > this->Container[_i].Key && key < this->Container[_i + 1].Key)
+        if (key > Keys[_i] && key < Keys[_i + 1])
         {
-            return std::pair<bool, size_t> {false, _i+1};
+            return seek_ans {false, _i+1};
         }
     }
-    return std::pair<bool, size_t> {false, _len};
+    return seek_ans {false, _len};
 }
 
 template<typename K_Tp, typename V_Tp, size_t order>
-B_Tree<K_Tp, V_Tp, order>::B_Tree()
-        :Root{nullptr} {}
+void B_Tree<K_Tp, V_Tp, order>::Node::emplace
+(const K_Tp &key, const V_Tp &value, size_t pos) {
+    for (size_t i=Size-1;i>=pos;--i) Paths[i+1] = Paths[i];
+    for (size_t i=Size-2;i>=pos;--i) {
+        Args[i+1] = Args[i];
+        Keys[i+1] = Keys[i];
+    }
+    Keys[pos] = key;
+    Args[pos] = value;
+    Paths[pos] = nullptr;
+    ++Size;
+}
 
 template<typename K_Tp, typename V_Tp, size_t order>
-void B_Tree<K_Tp, V_Tp, order>::insert(const K_Tp &key, const V_Tp &value)
-{
-    if (this->Root == nullptr)
-    {
-        this->Root = new Node {};
-        this->Root->Container[0] = Pair_Unit<K_Tp, V_Tp> {key, value};
-        this->Root->Table[1] = nullptr;
-        ++this->Root->Size;
+void B_Tree<K_Tp, V_Tp, order>::spilt
+        (B_Tree::Node &node, const K_Tp &key, const V_Tp &value, size_t pos) {
+    Node *_ln = new Node {}, *_rn = new Node{};
+    bool done {};
+    for (size_t i=0;i+i>=pos<(order-1)/2;++i) {
+        _ln->Keys[i+i>=pos] = node.Keys[i];
+        _ln->Args[i+i>=pos] = node.Args[i];
+    }
+    for (size_t i=(order-1)/2;i<order;++i) {
+
+    }
+}
+
+template<typename K_Tp, typename V_Tp, size_t order>
+void B_Tree<K_Tp, V_Tp, order>::insert(const K_Tp &key, const V_Tp &value) {
+    if (Root == nullptr) {
+        Root = new Node{};
+        Root->Keys[0] = key;
+        Root->Args[0] = value;
+        ++Root->Size;
         return;
     }
 
-    Node *_iter {this->Root};
-    std::pair<bool, size_t> _pair {};
-
-    while (true)
-    {
-        _pair = _iter->seek(key);
-        if (_pair.first)
-        {
-            _iter->Container[_pair.second].Value = value;
+    Node *iter {Root};
+    seek_ans seeker;
+    while(true) {
+        seeker = iter->seek(key);
+        if (seeker.found) {
+            iter->Args[seeker.pos] = value;
             return;
         } else {
-            if (_iter->Table[_pair.second] != nullptr)
-            {
-                _iter = _iter->Table[_pair.second];
+            if (iter->Paths[seeker.pos]!= nullptr) {
+                iter = iter->Paths[seeker.pos];
                 continue;
             } else {
-                for(size_t i = _iter->Size-1; i>=_pair.second; --i)
-                {
-                    _iter->Table[i + 1] = _iter->Table[i];
+                if (iter->Size != max_arg<order>()) {
+                    iter->emplace(key, value, seeker.pos);
+                } else {
+                    spilt(*iter, key, value, seeker.pos);
                 }
-                for(size_t i = _iter->Size-2; i>=_pair.second; --i)
-                {
-                    _iter->Container[i + 1] = _iter->Container[i];
-                }
-                _iter->Container[_pair.second] = Pair_Unit<K_Tp,V_Tp>{key, value};
-                _iter->Table[_pair.second] = nullptr;
-                ++_iter->Size;
-                if (_iter->Size > order) this->spilt(*_iter);
-                break;
-            }
-        }
-    }
-}
-
-template<typename K_Tp, typename V_Tp, size_t order>
-void B_Tree<K_Tp, V_Tp, order>::spilt(B_Tree::Node &node)
-{
-    auto _idx = static_cast<size_t>((node.Size - 1) / 2);
-    auto *_ln = new Node {};
-    auto *_rn = new Node {};
-    for(size_t _i=0;_i<_idx; ++_i) _ln->Container[_i] = node.Container[_i];
-    for(size_t _i=0;_i<node.Size-_idx-2;++_i) _rn->Container[_i] = node.Container[_idx + _i + 1];
-    for(size_t _i=0;_i<_idx; ++_i) _ln->Table[_i] = node.Table[_i];
-    for(size_t _i=0;_i<node.Size-_idx-1;++_i) _rn->Table[_i] = node.Table[_i + _idx];
-
-    _ln->Size = _idx + 1;
-    _rn->Size = node.Size - _idx - 1;
-    if(node.Father == nullptr)
-    {
-        auto &_top = *new Node {};
-        _top.Container[0] = node.Container[_idx];
-        _top.Table[0] = _ln;
-        _top.Table[1] = _rn;
-        _ln->Father = &_top;
-        _rn->Father = &_top;
-        _top.Size = 2;
-        this->Root = &_top;
-    } else {
-        auto *_fp = node.Father;
-        size_t _i = 0;
-        for(; _i != _fp->Size; ++ _i) {
-            if (_fp->Table[_i] == &node) break;
-        }
-        _ln->Father = _fp;
-        _rn->Father = _fp;
-        _fp->Table[_i] = _rn;
-        for(size_t _j=_fp->Size-2;_j>=_i;--_j)
-        {
-            _fp->Container[_j + 1] = _fp->Container[_j];
-        }
-        for(size_t _j=_fp->Size-1;_j>=_i;--_j)
-        {
-            _fp->Table[_j + 1] = _fp->Table[_j];
-        }
-        _fp->Container[_i] = node.Container[_idx];
-        _fp->Table[_i] = _ln;
-        ++_fp->Size;
-        if (_fp->Size > order) this->spilt(*_fp);
-    }
-}
-
-template<typename K_Tp, typename V_Tp, size_t order>
-void B_Tree<K_Tp, V_Tp, order>::erase(const K_Tp &key)
-{
-    if (this->Root == nullptr) return;
-    Node *_iter = this->Root;
-    std::pair<bool, size_t> _pair {};
-
-    while (true)
-    {
-        _pair = _iter->seek(key);
-        if (_pair.first)
-        {
-            this->destroy(*_iter, _pair.second);
-            return;
-        } else {
-            if (_iter->Table[_pair.second] != nullptr)
-            {
-                _iter = _iter->Table[_pair.second];
-                continue;
-            } else {
                 return;
             }
         }
@@ -192,80 +134,43 @@ void B_Tree<K_Tp, V_Tp, order>::erase(const K_Tp &key)
 }
 
 template<typename K_Tp, typename V_Tp, size_t order>
-void B_Tree<K_Tp, V_Tp, order>::destroy(B_Tree::Node &_iter, const size_t &index) {
-    if (_iter.Table[index] == nullptr && _iter.Table[index + 1] == nullptr)
-    {
-        for(size_t _i=index; _i <_iter.Size-2;++_i)
-        {
-            _iter.Container[_i] = _iter.Container[_i + 1];
-        }
-        for(size_t _i=index; _i<_iter.Size-1;++_i)
-        {
-            _iter.Table[_i] = _iter.Table[_i + 1];
-        }
-        _iter.Container[_iter.Size - 2] = Pair_Unit<K_Tp,V_Tp> {};
-        _iter.Table[_iter.Size - 1] = nullptr;
-        --_iter.Size;
-        if (_iter.Size == 1)
-        {
-            size_t _i = 0;
-            for(; _i != _iter.Father->Size; ++ _i)
-            {
-                if (_iter.Father->Table[_i] == &_iter) _iter.Father->Table[_i] = nullptr;
-            }
-        }
-    } else if (_iter.Table[index] != nullptr)
-    {
-        Node *_temp = _iter.Table[index];
-        _iter.Container[index] = _temp->Container[_temp->Size - 2];
-        this->destroy(*_temp, _temp->Size-2);
-    } else {
-        Node *_temp = _iter.Table[index + 1];
-        _iter.Container[index] = _temp->Container[0];
-        this->destroy(*_temp, 0);
+V_Tp B_Tree<K_Tp, V_Tp, order>::search(const K_Tp &key) const {
+    if (Root == nullptr) {
+        return V_Tp{};
     }
-}
 
-template<typename K_Tp, typename V_Tp, size_t order>
-V_Tp B_Tree<K_Tp, V_Tp, order>::search (const K_Tp &key) const
-{
-    Node *_iter {this->Root};
-    std::pair<bool, size_t> _pair {};
-
-    while(true)
-    {
-        _pair = _iter->seek(key);
-        if(_pair.first)
-        {
-            return _iter->Container[_pair.second].Value;
+    Node *iter {Root};
+    seek_ans seeker;
+    while(true) {
+        seeker = iter->seek(key);
+        if (seeker.found) {
+            return iter->Args[seeker.pos];
         } else {
-            if (_iter->Table[_pair.second] != nullptr)
-            {
-                _iter = _iter->Table[_pair.second];
+            if (iter->Paths[seeker.pos]!= nullptr) {
+                iter = iter->Paths[seeker.pos];
                 continue;
             } else {
-                return V_Tp{};
+                return V_Tp {};
             }
         }
     }
 }
 
 template<typename K_Tp, typename V_Tp, size_t order>
-bool B_Tree<K_Tp, V_Tp, order>::exist(const K_Tp &key) const
-{
-    Node *_iter {this->Root};
-    std::pair<bool, size_t> _pair {};
+bool B_Tree<K_Tp, V_Tp, order>::exist(const K_Tp &key) const {
+    if (Root == nullptr) {
+        return false;
+    }
 
-    while(true)
-    {
-        _pair = _iter->seek(key);
-        if(_pair.first)
-        {
+    Node *iter {Root};
+    seek_ans seeker;
+    while(true) {
+        seeker = iter->seek(key);
+        if (seeker.found) {
             return true;
         } else {
-            if (_iter->Table[_pair.second] != nullptr)
-            {
-                _iter = _iter->Table[_pair.second];
+            if (iter->Paths[seeker.pos]!= nullptr) {
+                iter = iter->Paths[seeker.pos];
                 continue;
             } else {
                 return false;
@@ -274,6 +179,10 @@ bool B_Tree<K_Tp, V_Tp, order>::exist(const K_Tp &key) const
     }
 }
 
+template<typename K_Tp, typename V_Tp, size_t order>
+void B_Tree<K_Tp, V_Tp, order>::erase(const K_Tp &key) {
+
+}
 
 
 #endif //DATASTRUCTURE_B_TREE_HPP

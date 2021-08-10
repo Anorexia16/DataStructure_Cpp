@@ -160,7 +160,7 @@ Matrix_STL2<bool> make_matrix_from_map_range(std::map<cls, Cont<cls>> const &map
 template<typename cls, is_square_matrix Matrix, template<typename T, typename=std::allocator<T> > class Cont1=std::vector,
         template<typename T, typename=std::allocator<T> > class Cont2>
 std::map<cls, Cont1<cls>> make_map_from_range_matrix(Matrix const &matrix, Cont2<cls> const &ranges) {
-    if (matrix.Columns != ranges.size()) throw;
+    if (matrix.Columns != ranges.index()) throw;
 
     size_t const size = matrix.Columns;
     std::map<cls, Cont1<cls>> res;

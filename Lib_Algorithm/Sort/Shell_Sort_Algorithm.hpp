@@ -1,7 +1,22 @@
 #ifndef DATASTRUCTURE_SHELL_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_SHELL_SORT_ALGORITHM_HPP
 
-#include "../../Generic_Paradigm/Iterable.hpp"
+template<class cls>
+concept Iterable_Container = requires (cls instance)
+{
+    instance.operator[](0);
+    instance.size();
+};
+
+template<class cls>
+concept Iterable_Iterator = requires (cls iterator)
+{
+    cls(iterator);
+    iterator.operator=(iterator);
+    iterator.operator-(-1);
+    ++iterator;
+    --iterator;
+};
 
 template<typename Tp, Iterable_Container Container>
 void shell_sort(Container &container)

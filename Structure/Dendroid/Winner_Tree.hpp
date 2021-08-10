@@ -56,7 +56,7 @@ Winner_Tree<Tp>::Winner_Tree(const std::map<Tp, size_t> &map, bool const &revers
     Binary_Node<Player> *_left;
     Binary_Node<Player> *_right;
 
-    while (_deque.size() != 1)
+    while (_deque.index() != 1)
     {
         _left = _deque.front();
         _deque.pop_front();

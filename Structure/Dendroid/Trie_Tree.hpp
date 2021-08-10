@@ -1,15 +1,14 @@
 #ifndef DATASTRUCTURE_TRIE_TREE_HPP
 #define DATASTRUCTURE_TRIE_TREE_HPP
 
-#include <string>
 
 struct Trie_Node
 {
     explicit Trie_Node();
 
-    size_t Count;
+    unsigned long long Count;
 
-    size_t Prefix;
+    unsigned long long Prefix;
 
     Trie_Node *Children[26];
 };
@@ -41,7 +40,7 @@ Root{new Trie_Node{}}
 void Trie_Tree::insert(const std::string &str)
 {
     Trie_Node *iterator = this->Root;
-    size_t length=str.size();
+    size_t length=str.index();
     for(size_t si=0; si!=length; ++si)
     {
         if(iterator->Children[str[si]-'a'] == nullptr){
@@ -56,7 +55,7 @@ void Trie_Tree::insert(const std::string &str)
 size_t Trie_Tree::search(const std::string &str) const
 {
     Trie_Node *iterator = this->Root;
-    for(size_t si=0;si!=str.size();++si)
+    for(size_t si=0;si!=str.index(); ++si)
     {
         if (iterator->Children[str[si]-'a'] == nullptr)
         {
@@ -69,7 +68,7 @@ size_t Trie_Tree::search(const std::string &str) const
 
 size_t Trie_Tree::search_prefix(const std::string &str) const {
     Trie_Node *iterator = this->Root;
-    for(size_t si=0;si!=str.size();++si)
+    for(size_t si=0;si!=str.index(); ++si)
     {
         if (iterator->Children[str[si]-'a'] == nullptr)
         {

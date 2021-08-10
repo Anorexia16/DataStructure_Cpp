@@ -13,18 +13,6 @@
         Lib/Decorator.hpp
         solve the rest method designing
 
-5. Tensor
-        Structure/Tensor_Square.hpp
-        declaration in package style
-
-6. Dim2 Matrix in Chain
-        Structure/Matrix_N2.hpp
-        Construct Node Chains error
-
-7. Specialize STL Matrix in std::array
-        Structure/Matrix_STL1.hpp
-        Structure/Matrix_STL2.hpp
-
 8. Operator times in Polynomial
         Normal_Algorithm/math/Polynomial.hpp
         Normal_Algorithm/math/Polynomial_C.hpp
@@ -32,10 +20,9 @@
 9. Operator times in Tridiagonal Matrix
         Cpp_Data_Structure\Special_Structure\Matrix_Tridiagonal.hpp
 
-10. Test on STL like Sort Algorithm
-        Normal_Algorithm/Linear/Insert_Sort.hpp
-
-11. Skip List design to record change:
-        Structure/Skip_List.hpp
 
 12. Gini values in Decision_Tree/CART_core.hpp
+
+13. Universal Segment_Tree
+
+14 Treap_S.hpp

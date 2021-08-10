@@ -91,12 +91,12 @@ void DT_Interface::Pretreatment_Interface(std::ostream &out, std::istream &in)
             out << "  grp x y ---- transform numeric type column {x}." << std::endl;
             out << "  cot x   ---- transform particular column as continuous attributes" << std::endl;
             out << "Significant options:" << std::endl;
-            out << "  /i  ---- Input column index x rather than its name.(cut, spe, grp)" << std::endl;
-            out << "  /s  ---- Input column name x rather than its index.(cut, spe, grp)" << std::endl;
+            out << "  /i  ---- Input column ticks x rather than its name.(cut, spe, grp)" << std::endl;
+            out << "  /s  ---- Input column name x rather than its ticks.(cut, spe, grp)" << std::endl;
         } else if (_in_word == "cut") {
             if (in.good()) in >> _in_word;
             else {
-                out << "Func Error: cut requires index information." << std::endl;
+                out << "Func Error: cut requires ticks information." << std::endl;
                 continue;
             }
             if (_in_word == "/s") {
@@ -115,7 +115,7 @@ void DT_Interface::Pretreatment_Interface(std::ostream &out, std::istream &in)
                         in.clear();
                         continue;
                     }
-                } else out << "Func Error: cut requires index information." << std::endl;
+                } else out << "Func Error: cut requires ticks information." << std::endl;
                 in.clear();
                 continue;
             } else if (_in_word == "/i") {
@@ -146,7 +146,7 @@ void DT_Interface::Pretreatment_Interface(std::ostream &out, std::istream &in)
         } else if (_in_word == "grp") {
             if (in.good()) in >> _in_word;
             else {
-                out << "Func Error: grp requires index and numeric information." << std::endl;
+                out << "Func Error: grp requires ticks and numeric information." << std::endl;
                 in.clear();
                 continue;
             }
@@ -189,7 +189,7 @@ void DT_Interface::Pretreatment_Interface(std::ostream &out, std::istream &in)
         } else if (_in_word == "spe") {
             if (in.good()) in >> _in_word;
             else {
-                out << "Func Error: grp requires index and numeric information." << std::endl;
+                out << "Func Error: grp requires ticks and numeric information." << std::endl;
                 in.clear();
                 continue;
             }
@@ -242,7 +242,7 @@ void DT_Interface::Pretreatment_Interface(std::ostream &out, std::istream &in)
         } else if (_in_word == "cot") {
             if (in.good()) in >> _in_word;
             else {
-                out << "Func Error: grp requires index and numeric information." << std::endl;
+                out << "Func Error: grp requires ticks and numeric information." << std::endl;
                 in.clear();
                 continue;
             }
@@ -337,7 +337,7 @@ void DT_Interface::Pushing_Pool_Interface(std::ostream &out, std::istream &in)
 void DT_Interface::Tree_Generate_Interface(std::ostream &out, std::istream &in)
 {
     out << "Decision Trees are formed by CART(Classification and Regression Tree) algorithm, \nwhich calculate "
-           "minimum Value of Gini index of each decision tree." << std::endl;
+           "minimum Value of Gini ticks of each decision tree." << std::endl;
     this->DPct = &Translation_Decoder(this->DPool->Trans_Table, this->DPool->Continuous);
     out << "Decision tree root is on the initialization now." << std::endl;
     std::vector<std::pair<ssize_t, ssize_t>*> _args {};

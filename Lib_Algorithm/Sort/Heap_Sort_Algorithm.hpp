@@ -1,8 +1,22 @@
 #ifndef DATASTRUCTURE_HEAP_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_HEAP_SORT_ALGORITHM_HPP
 
-#include "../../Generic_Paradigm/Iterable.hpp"
-#include "../../Structure/Dendroid/Max_Heap.hpp"
+template<class cls>
+concept Iterable_Container = requires (cls instance)
+{
+    instance.operator[](0);
+    instance.size();
+};
+
+template<class cls>
+concept Iterable_Iterator = requires (cls iterator)
+{
+    cls(iterator);
+    iterator.operator=(iterator);
+    iterator.operator-(-1);
+    ++iterator;
+    --iterator;
+};
 
 template<typename Tp, Iterable_Container Container>
 void heap_sort(Container &container)
@@ -11,7 +25,7 @@ void heap_sort(Container &container)
     size_t const nums = container.size();
     Tp _temp;
     size_t _i;
-    for(size_t _j= container.size()/2-1;_j!=-1;--_j)
+    for(size_t _j= container.size() / 2 - 1; _j != -1; --_j)
     {
         _i = _j;
         while (2 * _i + 1 < nums) {
@@ -24,7 +38,7 @@ void heap_sort(Container &container)
                     continue;
                 } else break;
             } else {
-                if (2*_i + 2 < container.size() && container[2*_i+1] < container[2*_i+2]) {
+                if (2*_i + 2 < container.size() && container[2 * _i + 1] < container[2 * _i + 2]) {
                     _temp = container[_i];
                     container[_i] = container[2*_i+2];
                     container[2 *_i+2] = _temp;
