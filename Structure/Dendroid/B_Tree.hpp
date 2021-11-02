@@ -1,4 +1,4 @@
-#ifndef DATASTRUCTURE_B_TREE_HPP
+#ifndef DATASTRUCTURE_BP_TREE_HPP
 #define DATASTRUCTURE_B_TREE_HPP
 
 #include <cstdlib>
@@ -185,4 +185,4 @@ void B_Tree<K_Tp, V_Tp, order>::erase(const K_Tp &key) {
 }
 
 
-#endif //DATASTRUCTURE_B_TREE_HPP
+#endif //DATASTRUCTURE_BP_TREE_HPP
