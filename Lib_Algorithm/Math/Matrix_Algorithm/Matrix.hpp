@@ -1,72 +1,41 @@
-#ifndef DATASTRUCTURE_MATRIX_STL2_HPP
-#define DATASTRUCTURE_MATRIX_STL2_HPP
+#ifndef DATASTRUCTURE_MATRIX_HPP
+#define DATASTRUCTURE_MATRIX_HPP
 
-#include "../Abstract/Abstract_Matrix.hpp"
-#include <algorithm>
-#include <iterator>
-#include <ostream>
 #include <vector>
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont = std::vector>
-class Matrix_STL2
+class Matrix
 {
 public:
-    Matrix_STL2(size_t const &, size_t const &, cls const & = cls{});
+    Matrix(size_t const &, size_t const &, cls const & = cls{});
+    Matrix(cls const *, size_t const &, size_t const &);
+    Matrix(std::initializer_list<cls> const &, size_t const &, size_t const &);
+    Matrix(Matrix const &) = default;
+    ~Matrix() = default;
 
-    Matrix_STL2(cls const *, size_t const &, size_t const &);
-
-    Matrix_STL2(std::initializer_list<cls> const &, size_t const &, size_t const &);
-
-    Matrix_STL2(Matrix_STL2 const &) = default;
-
-    ~Matrix_STL2() = default;
-
-    inline Cont<cls> expand();
-
-    inline cls *expand_p();
-
+    inline Cont<cls> split();
+    inline cls *split_arr();
     inline void resize(size_t const &, size_t const &);
 
-    Matrix_STL2<cls> operator+(Matrix_STL2 const &) const;
-
-    Matrix_STL2<cls> &operator+=(Matrix_STL2 const &);
-
-    Matrix_STL2<cls> operator-(Matrix_STL2 const &) const;
-
-    Matrix_STL2<cls> &operator-=(Matrix_STL2 const &);
-
-    Matrix_STL2<cls> operator*(Matrix_STL2 const &) const;
-
-    Matrix_STL2<cls> &operator*=(Matrix_STL2 const &);
-
-    Matrix_STL2<cls> operator*(cls const &) const;
-
-    Matrix_STL2<cls> &operator*=(cls const &);
+    Matrix<cls> operator+(Matrix const &) const;
+    Matrix<cls> &operator+=(Matrix const &);
+    Matrix<cls> operator-(Matrix const &) const;
+    Matrix<cls> &operator-=(Matrix const &);
+    Matrix<cls> operator*(Matrix const &) const;
+    Matrix<cls> &operator*=(Matrix const &);
+    Matrix<cls> operator*(cls const &) const;
+    Matrix<cls> &operator*=(cls const &);
 
     inline cls &get(size_t const &, size_t const &);
-
     inline cls get_c(size_t const &, size_t const &) const;
 
-    Matrix_STL2<cls> T() const;
+    Matrix<cls> T() const;
 
     [[nodiscard]] std::pair<size_t, size_t> shape() const;
-
     [[nodiscard]] size_t size() const;
 
-    friend std::ostream &operator<<(std::ostream &out, Matrix_STL2<cls> const &op)
-    {
-        for (auto &&iter: op.Container)
-        {
-            std::copy(std::begin(iter), std::end(iter), std::ostream_iterator<cls>(out, " "));
-            out << std::endl;
-        }
-        return out;
-    }
-
     size_t Columns;
-
     size_t Rows;
-
     inline Cont<cls> &operator[](size_t const &);
 
 protected:
@@ -74,8 +43,8 @@ protected:
 };
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls, Cont>::Matrix_STL2(const size_t &column, const size_t &row, cls const &v)
-        : Columns{column}, Rows{row}
+Matrix<cls, Cont>::Matrix(const size_t &column, const size_t &row, cls const &v)
+: Columns{column}, Rows{row}
 {
     Cont<Cont<cls>> cont;
     for (auto ci = 0; ci != column; ++ci)
@@ -90,8 +59,8 @@ Matrix_STL2<cls, Cont>::Matrix_STL2(const size_t &column, const size_t &row, cls
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls, Cont>::Matrix_STL2(const cls *ptr, const size_t &column, const size_t &row)
-        : Columns{column}, Rows{row}
+Matrix<cls, Cont>::Matrix(const cls *ptr, const size_t &column, const size_t &row)
+: Columns{column}, Rows{row}
 {
     Cont<Cont<cls>> cont;
     for (auto ci = 0; ci != column; ++ci)
@@ -113,8 +82,8 @@ Matrix_STL2<cls, Cont>::Matrix_STL2(const cls *ptr, const size_t &column, const 
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls, Cont>::Matrix_STL2(const std::initializer_list<cls> &list, const size_t &column, const size_t &row)
-        : Columns{column}, Rows{row}
+Matrix<cls, Cont>::Matrix(const std::initializer_list<cls> &list, const size_t &column, const size_t &row)
+: Columns{column}, Rows{row}
 {
     Cont<Cont<cls>> cont;
     for (auto ci = 0; ci != column; ++ci)
@@ -137,19 +106,19 @@ Matrix_STL2<cls, Cont>::Matrix_STL2(const std::initializer_list<cls> &list, cons
 
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-std::pair<size_t, size_t> Matrix_STL2<cls, Cont>::shape() const
+std::pair<size_t, size_t> Matrix<cls, Cont>::shape() const
 {
     return std::pair<size_t, size_t>(this->Columns, this->Rows);
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-size_t Matrix_STL2<cls, Cont>::size() const
+size_t Matrix<cls, Cont>::size() const
 {
     return this->Columns * this->Rows;
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Cont<cls> Matrix_STL2<cls, Cont>::expand()
+Cont<cls> Matrix<cls, Cont>::split()
 {
     Cont<cls> res{};
     for (auto &&ci: this->Container)
@@ -163,7 +132,7 @@ Cont<cls> Matrix_STL2<cls, Cont>::expand()
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-cls *Matrix_STL2<cls, Cont>::expand_p()
+cls *Matrix<cls, Cont>::split_arr()
 {
     cls *res = new cls[this->size()];
     size_t global_index = 0;
@@ -179,17 +148,17 @@ cls *Matrix_STL2<cls, Cont>::expand_p()
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-void Matrix_STL2<cls, Cont>::resize(const size_t &column, const size_t &row)
+void Matrix<cls, Cont>::resize(const size_t &column, const size_t &row)
 {
-    cls *cont = this->expand_p();
-    this = Matrix_STL2<cls>{cont, column, row};
+    cls *cont = this->split_arr();
+    this = Matrix<cls>{cont, column, row};
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator+(const Matrix_STL2 &op) const
+Matrix<cls> Matrix<cls, Cont>::operator+(const Matrix &op) const
 {
     if (this->Columns != op.Columns || this->Rows != this->Rows) throw;
-    Matrix_STL2<cls> res{this->Columns, this->Rows};
+    Matrix<cls> res{this->Columns, this->Rows};
     for (size_t ci = 0; ci != op.Columns; ++ci)
     {
         for (size_t ri = 0; ri != this->Rows; ++ri)
@@ -201,7 +170,7 @@ Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator+(const Matrix_STL2 &op) const
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator+=(const Matrix_STL2 &op)
+Matrix<cls> &Matrix<cls, Cont>::operator+=(const Matrix &op)
 {
     if (this->Columns != op.Columns || this->Rows != this->Rows) throw;
     for (size_t ci = 0; ci != op.Columns; ++ci)
@@ -215,10 +184,10 @@ Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator+=(const Matrix_STL2 &op)
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator-(const Matrix_STL2 &op) const
+Matrix<cls> Matrix<cls, Cont>::operator-(const Matrix &op) const
 {
     if (this->Columns != op.Columns || this->Rows != this->Rows) throw;
-    Matrix_STL2<cls> res{this->Columns, this->Rows};
+    Matrix<cls> res{this->Columns, this->Rows};
     for (size_t ci = 0; ci != op.Columns; ++ci)
     {
         for (size_t ri = 0; ri != this->Rows; ++ri)
@@ -230,7 +199,7 @@ Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator-(const Matrix_STL2 &op) const
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator-=(const Matrix_STL2 &op)
+Matrix<cls> &Matrix<cls, Cont>::operator-=(const Matrix &op)
 {
     if (this->Columns != op.Columns || this->Rows != this->Rows) throw;
     for (size_t ci = 0; ci != op.Columns; ++ci)
@@ -244,10 +213,10 @@ Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator-=(const Matrix_STL2 &op)
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator*(const cls &op) const
+Matrix<cls> Matrix<cls, Cont>::operator*(const cls &op) const
 {
     if (this->Columns != op.Rows) throw;
-    Matrix_STL2<cls> res{this->Columns, this->Rows};
+    Matrix<cls> res{this->Columns, this->Rows};
     for (size_t ci = 0; ci != op.Columns; ++ci)
     {
         for (size_t ri = 0; ri != this->Rows; ++ri)
@@ -259,7 +228,7 @@ Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator*(const cls &op) const
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator*=(const cls &op)
+Matrix<cls> &Matrix<cls, Cont>::operator*=(const cls &op)
 {
     if (this->Columns != op.Rows) throw;
     for (size_t ci = 0; ci != op.Columns; ++ci)
@@ -273,27 +242,27 @@ Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator*=(const cls &op)
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-cls &Matrix_STL2<cls, Cont>::get(const size_t &column, const size_t &row)
+cls &Matrix<cls, Cont>::get(const size_t &column, const size_t &row)
 {
     return (*this)[column][row];
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-cls Matrix_STL2<cls, Cont>::get_c(const size_t &column, const size_t &row) const
+cls Matrix<cls, Cont>::get_c(const size_t &column, const size_t &row) const
 {
     return *(std::begin(*(std::begin(this->Container) + column)) + row);
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Cont<cls> &Matrix_STL2<cls, Cont>::operator[](const size_t &index)
+Cont<cls> &Matrix<cls, Cont>::operator[](const size_t &index)
 {
     return this->Container[index];
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> Matrix_STL2<cls, Cont>::T() const
+Matrix<cls> Matrix<cls, Cont>::T() const
 {
-    Matrix_STL2<cls> res{this->Rows, this->Columns};
+    Matrix<cls> res{this->Rows, this->Columns};
     for (auto iter = 0; iter != this->size(); ++iter)
     {
         res[iter % this->Rows][iter / this->Rows] = this->get_c(iter / this->Rows, iter % this->Rows);
@@ -302,10 +271,10 @@ Matrix_STL2<cls> Matrix_STL2<cls, Cont>::T() const
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator*(const Matrix_STL2 &op) const
+Matrix<cls> Matrix<cls, Cont>::operator*(const Matrix &op) const
 {
     if (this->Rows != op.Columns) throw;
-    Matrix_STL2<cls> res{this->Columns, op.Rows};
+    Matrix<cls> res{this->Columns, op.Rows};
     cls temp{};
     for (auto ci = 0; ci != this->Columns; ++ci)
     {
@@ -323,7 +292,7 @@ Matrix_STL2<cls> Matrix_STL2<cls, Cont>::operator*(const Matrix_STL2 &op) const
 }
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator*=(const Matrix_STL2 &op)
+Matrix<cls> &Matrix<cls, Cont>::operator*=(const Matrix &op)
 {
     if (this->Rows != op.Columns) throw;
     auto res = Cont<Cont<cls>>(Cont<cls>(cls{}, this->Rows), this->Columns);
@@ -347,4 +316,5 @@ Matrix_STL2<cls> &Matrix_STL2<cls, Cont>::operator*=(const Matrix_STL2 &op)
 }
 
 
-#endif //DATASTRUCTURE_MATRIX_STL2_HPP
+
+#endif //DATASTRUCTURE_MATRIX_HPP

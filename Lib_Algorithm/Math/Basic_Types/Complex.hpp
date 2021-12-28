@@ -7,7 +7,11 @@
 class Complex
 {
 public:
-    explicit Complex(long double const & = 0, long double const & = 0);
+    Complex() = default;
+
+    Complex(long double const &, long double const &);
+
+    Complex(std::initializer_list<long double> const &);
 
     Complex(Complex const &) = default;
 
@@ -70,6 +74,10 @@ private:
 
 Complex::Complex(const long double &re, const long double &im)
     : Real{re}, Imaginary{im} {}
+
+Complex::Complex(std::initializer_list<long double> const &pair)
+    : Real{*pair.begin()}, Imaginary{*(pair.begin()+1)} {}
+
 
 long double Complex::Re(const Complex &c)
 {
@@ -204,5 +212,6 @@ std::vector<Complex> Complex::root(long const &x) const
 {
     return Complex::Root(*this, x);
 }
+
 
 #endif //DATASTRUCTURE_COMPLEX_HPP

@@ -112,4 +112,4 @@ void ChainBC<T>::resize(size_t const &size) {
     this->Size = size;
 }
 
-#endif //DATASTRUCTURE_CHAIN_BIDIRECTIONAL_CIRCLE_HPP
+#endif //DATASTRUCTURE_CHAIN_BIDIRECTIONAL
