@@ -21,7 +21,7 @@ public:
     Raw_Dict();
 
     template<template<typename elem, typename =std::allocator<elem>>class Cont>
-    explicit Raw_Dict(Cont<std::string> const &);
+    explicit Raw_Dict([[maybe_unused]] Cont<std::string> const &);
 
     template<unsigned long long n>
     void insert(char const (&)[n]);
@@ -47,7 +47,7 @@ public:
     Dict();
 
     template<template<typename elem, typename =std::allocator<elem>>class Cont>
-    void import(Cont<std::string> const &);
+    void import([[maybe_unused]] Cont<std::string> const &);
 
     void import(std::initializer_list<std::string> const &);
 
@@ -86,8 +86,8 @@ std::vector<std::string> Dict::release() {
 }
 
 template<template<typename elem, typename =std::allocator<elem>>class Cont>
-void Dict::import(const Cont<std::string> &container) {
-    for (auto const &iter:container) insert(iter);
+void Dict::import([[maybe_unused]] const Cont<std::string> &container) {
+    for ([[maybe_unused]] auto const &iter:container) insert(iter);
 }
 
 void Dict::import(const std::initializer_list<std::string> &init_list) {
@@ -107,10 +107,10 @@ Raw_Dict::Raw_Dict()
         :Root{new Dict_Node{nullptr,nullptr, false,'~'}} {}
 
 template<template<typename elem, typename =std::allocator<elem>>class Cont>
-Raw_Dict::Raw_Dict(const Cont<std::string> &container)
+Raw_Dict::Raw_Dict([[maybe_unused]] const Cont<std::string> &container)
         :Root{new Dict_Node{nullptr,nullptr, false, '~'}}
 {
-    for (auto const &iter:container) {
+    for ([[maybe_unused]] auto const &iter:container) {
         this->insert(iter);
     }
 }

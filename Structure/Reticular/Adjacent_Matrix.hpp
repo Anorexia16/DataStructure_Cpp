@@ -1,9 +1,10 @@
 #ifndef DATASTRUCTURE_ADJACENT_MATRIX_HPP
 #define DATASTRUCTURE_ADJACENT_MATRIX_HPP
 
-#include "../Linear/Stack_Chain.hpp"
-#include "../Linear/Queue_Chain.hpp"
-#include "../Abstract/Abstract_Graph.hpp"
+#include <Linear/Stack_Chain.hpp>
+#include <Linear/Queue_Chain.hpp>
+#include <Abstract/Abstract_Graph.hpp>
+#include <vector>
 
 template<size_t num, bool bidirectional = true, bool is_weighted = false>
 struct Adjacent_Matrix: public Graph

@@ -4,7 +4,7 @@
 #include "../Abstract/Abstract_Matrix.hpp"
 
 template<typename cls>
-class Matrix_P2 : virtual public Matrix<cls>
+class Matrix_P2 : virtual public Static_Matrix<cls>
 {
 public:
     Matrix_P2(size_t const &, size_t const &, cls const & = cls{});

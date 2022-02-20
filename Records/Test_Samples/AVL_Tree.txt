@@ -1,0 +1,12 @@
+#include<iostream>
+#include "Structure/AVL_Tree.hpp"
+
+
+int main() {
+    std::vector<KW_Pair<int, std::string>> _vec {KW_Pair<int, std::string>{30, "a"}, KW_Pair<int, std::string>{5, "b"}, KW_Pair<int, std::string>{2, "c"},
+                                                   KW_Pair<int, std::string>{40, "d"}, KW_Pair<int, std::string>{35, "e"}, KW_Pair<int, std::string>{80, "temp"},
+                                                   KW_Pair<int, std::string>{80, "f"}};
+    auto c = make_avl(_vec);
+
+    std::cout << "Debug Hook" << std::endl;
+}

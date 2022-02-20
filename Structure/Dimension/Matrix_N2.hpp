@@ -5,7 +5,7 @@
 #include "../Linear/Chain_Bidirectional_Circle.hpp"
 
 template<typename cls>
-class Matrix_N2 : virtual public Matrix<cls>, virtual public ChainBC<cls>
+class Matrix_N2 : virtual public Static_Matrix<cls>, virtual public ChainBC<cls>
 {
 public:
     Matrix_N2(size_t const &, size_t const &);

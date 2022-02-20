@@ -11,9 +11,9 @@ template<typename K_Tp, typename V_Tp>
 class Indexed_Binary_Search_Tree
 {
 public:
-    using IBST_Node = Binary_Node<Pair_Unit<K_Tp, V_Tp>>;
+    using IBST_Node = Binary_Node<KW_Pair<K_Tp, V_Tp>>;
 
-    using IBST_Item = Pair_Unit<K_Tp, V_Tp>;
+    using IBST_Item = KW_Pair<K_Tp, V_Tp>;
 
     explicit Indexed_Binary_Search_Tree(std::vector<IBST_Item> const &);
 
@@ -313,7 +313,7 @@ typename Indexed_Binary_Search_Tree<K_Tp, V_Tp>::IBST_Item &Indexed_Binary_Searc
 }
 
 template<typename kt, typename vt>
-Indexed_Binary_Search_Tree<kt, vt> make_IBST(std::vector<Pair_Unit<kt ,vt>> const &vec)
+Indexed_Binary_Search_Tree<kt, vt> make_IBST(std::vector<KW_Pair<kt ,vt>> const &vec)
 {
     return Indexed_Binary_Search_Tree<kt, vt> {vec};
 }

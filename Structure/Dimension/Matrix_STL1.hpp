@@ -8,7 +8,7 @@
 #include <vector>
 
 template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont = std::vector>
-class Matrix_STL1 : Matrix<cls>
+class Matrix_STL1 : Static_Matrix<cls>
 {
 public:
     Matrix_STL1(size_t const &, size_t const &, cls const & = cls{});

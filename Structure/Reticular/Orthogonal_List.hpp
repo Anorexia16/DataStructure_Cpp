@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_ORTHOGONAL_LIST_HPP
 #define DATASTRUCTURE_ORTHOGONAL_LIST_HPP
 
-#include "../Abstract/Abstract_Graph.hpp"
+#include <Abstract/Abstract_Graph.hpp>
 
 struct OL_Edge {
     size_t weight{};

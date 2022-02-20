@@ -1,12 +1,14 @@
 #ifndef DATASTRUCTURE_WINNER_TREE_HPP
 #define DATASTRUCTURE_WINNER_TREE_HPP
 
-#include <map>
+#include <Assistance/Storage_Unit.hpp>
+#include <Dendroid/Leftist_Tree.hpp>
+#include <Dendroid/Binary_Tree.hpp>
+#include <string>
 #include <deque>
-#include "Leftist_Tree.hpp"
-#include "../Assistance/Storage_Unit.hpp"
+#include <map>
 
-typedef Pair_Unit<size_t, std::string> Player;
+typedef KW_Pair<size_t, std::string> Player;
 
 template<typename Tp>
 class Winner_Tree
@@ -41,7 +43,7 @@ protected:
 
 template<typename Tp>
 Winner_Tree<Tp>::Winner_Tree(const std::map<Tp, size_t> &map, bool const &reverse)
-:Tree{std::vector<Player>{}, LT_Index::Height, reverse}, Players{}, Reverse{reverse}
+:Tree{}, Players{}, Reverse{reverse}
 {
     std::deque<Binary_Node<Player> *> _deque {};
     Binary_Node<Player> *_ptr;
@@ -56,7 +58,7 @@ Winner_Tree<Tp>::Winner_Tree(const std::map<Tp, size_t> &map, bool const &revers
     Binary_Node<Player> *_left;
     Binary_Node<Player> *_right;
 
-    while (_deque.index() != 1)
+    while (_deque.size() != 1)
     {
         _left = _deque.front();
         _deque.pop_front();
@@ -66,7 +68,7 @@ Winner_Tree<Tp>::Winner_Tree(const std::map<Tp, size_t> &map, bool const &revers
         _deque.template emplace_back(_ptr);
     }
 
-    Tree.Top = _deque[0];
+    Tree.top() = _deque.front();
 }
 
 template<typename Tp>
@@ -78,25 +80,25 @@ Binary_Node<Player> &Winner_Tree<Tp>::operator[](const size_t &idx)
 template<typename Tp>
 Binary_Node<Player> &Winner_Tree<Tp>::operator[](const std::pair<size_t, size_t> &ids)
 {
-    Binary_Node<Player> &_temp = this->operator[](ids.first);
-    for (size_t i = 0; i!=ids.second ; ++i) _temp = _temp.father();
-    return _temp;
+    Binary_Node<Player> *_temp = &operator[](ids.first);
+    for (size_t i = 0; i!=ids.second ; ++i) _temp = _temp->Father;
+    return *_temp;
 }
 
 template<typename Tp>
 void Winner_Tree<Tp>::replay(const size_t &index, const size_t &value)
 {
     if (index > this->Players.size()) throw;
-    Binary_Node<Player>  &_new = this->operator[](index);
-    _new.value().Key = value;
+    Binary_Node<Player>  *_new = &operator[](index);
+    _new->Element.Key = value;
 
     while(true)
     {
-        if ((!this->Reverse && value < _new.father()->Key) ||
-            (this->Reverse && value > _new.father()->Key)) break;
-        _new.father().value() = _new.value();
-        _new = _new.father();
-        if(_new.Father == nullptr) break;
+        if ((!this->Reverse && value < _new->Father->Element.Key) ||
+            (this->Reverse && value > _new->Father->Element.Key)) break;
+        _new->Father->Element = _new->Element;
+        _new = _new->Father;
+        if(_new->Father == nullptr) break;
     }
 
 }
@@ -152,7 +154,7 @@ Binary_Node<Player> &Winner_Tree<Tp>::winner_merge(Binary_Node<Player> &_a, Bina
         _new = &_b.value();
     }
     Binary_Node<Player> &_res = *new Binary_Node<Player> {*_new};
-    _res.link_d(_a);
+    _res.Left_Child=a;
     _res.link_d(_b);
     return _res;
 }

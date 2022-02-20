@@ -2,10 +2,10 @@
 #define DATASTRUCTURE_ADJACENT_LIST_HPP
 
 #include <iostream>
-#include "../Linear/Stack_Chain.hpp"
-#include "../Linear/Queue_Chain.hpp"
-#include "../Abstract/Abstract_Graph.hpp"
-#include "../Assistance/Node_Unidirectional.hpp"
+#include <Linear/Stack_Chain.hpp>
+#include <Linear/Queue_Chain.hpp>
+#include <Abstract/Abstract_Graph.hpp>
+#include <Assistance/Node_Unidirectional.hpp>
 
 
 struct Gn

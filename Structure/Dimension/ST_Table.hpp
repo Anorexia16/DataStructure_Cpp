@@ -3,8 +3,8 @@
 
 #include <array>
 
-template<size_t x, size_t l>
-constexpr size_t log_iter() {
+template<unsigned long long x, unsigned long long l>
+constexpr unsigned long long log_iter() {
     if constexpr (x<(1<<l)) {
         return l-1;
     } else {
@@ -12,12 +12,12 @@ constexpr size_t log_iter() {
     }
 }
 
-template<size_t x>
-constexpr size_t static_log2() {
+template<unsigned long long x>
+constexpr unsigned long long static_log2() {
     return log_iter<x, 0>();
 }
 
-template<size_t x>
+template<unsigned long long x>
 constexpr bool ST_size = x>2;
 
 enum class ST_OP {Max, Min, And , Or, Xor, Gcd, Null};
@@ -57,62 +57,62 @@ tp func_null(tp const &a, tp const &b) {
     return tp{};
 }
 
-template<class I, size_t N, typename = typename std::enable_if_t<ST_size<N>>>
+template<class I, unsigned long long N, typename = typename std::enable_if_t<ST_size<N>>>
 class ST_Table {
 public:
     explicit ST_Table(I (&)[N], I (*) (I const &, I const &));
 
     explicit ST_Table(std::array<I, N> const &, I (*) (I const &, I const &));
 
-    I get(size_t const &, size_t const &) const;
+    I get(unsigned long long const &, unsigned long long const &) const;
 
 private:
-    size_t max_depth;
+    unsigned long long max_depth;
 
-    size_t lgs[N+1];
+    unsigned long long lgs[N+1];
 
     I Container[N+1][static_log2<N>() + 1];
 
     I (*Func) (I const &, I const &);
 };
 
-template<class I, size_t N, typename valid>
+template<class I, unsigned long long N, typename valid>
 ST_Table<I, N, valid>::ST_Table(I (&arr)[N], I (*fc) (I const &, I const &))
 :Container{}, lgs{}, Func{fc}, max_depth{static_log2<N>()} {
-    for(size_t i=0; i != N+1; ++i) Container[i][0] = arr[i];
-    for(size_t i=0;i!=max_depth;++i) {
-        for(size_t j=0; j != N+1; ++j) {
+    for(unsigned long long i=0; i != N+1; ++i) Container[i][0] = arr[i];
+    for(unsigned long long i=0;i!=max_depth;++i) {
+        for(unsigned long long j=0; j != N+1; ++j) {
             Container[j][i] = Func(Container[j][i-1], Container[j+(1<<(i-1))][i-1]);
         }
     }
     if (N > 1)lgs[1] = 0; lgs[2] = 1;
-    for(size_t i=3; i < N+1; ++i) {
+    for(unsigned long long i=3; i < N+1; ++i) {
         lgs[i] = lgs[i/2] + 1;
     }
 }
 
-template<class I, size_t N, typename valid>
+template<class I, unsigned long long N, typename valid>
 ST_Table<I, N, valid>::ST_Table(const std::array<I, N> &arr, I (*fc) (I const &, I const &))
 :Container{}, lgs{}, Func{fc}, max_depth{static_log2<N>()} {
-    for(size_t i=1; i != N+1; ++i) Container[i][0] = arr[i];
-    for(size_t i=1;i!=max_depth;++i) {
-        for(size_t j=1; j != N+1; ++j) {
+    for(unsigned long long i=1; i != N+1; ++i) Container[i][0] = arr[i];
+    for(unsigned long long i=1;i!=max_depth;++i) {
+        for(unsigned long long j=1; j != N+1; ++j) {
             Container[j][i] = Func(Container[j][i-1], Container[j+(1<<(i-1))][i-1]);
         }
     }
     if (N > 1)lgs[1] = 0; lgs[2] = 1;
-    for(size_t i=3; i < N+1; ++i) {
+    for(unsigned long long i=3; i < N+1; ++i) {
         lgs[i] = lgs[i/2] + 1;
     }
 }
 
-template<class I, size_t N, typename valid>
-I ST_Table<I, N, valid>::get(size_t const &left, size_t const &right) const {
+template<class I, unsigned long long N, typename valid>
+I ST_Table<I, N, valid>::get(unsigned long long const &left, unsigned long long const &right) const {
     auto lg=lgs[right - left + 1];
     return Func(Container[left][lg], Container[right - (1 << lg) + 1][lg]);
 }
 
-template<typename tp, size_t n, ST_OP op>
+template<typename tp, unsigned long long n, ST_OP op>
 decltype(auto) make_st_table(tp (&arr)[n]) {
     switch (op) {
         case ST_OP::Max:
@@ -132,7 +132,7 @@ decltype(auto) make_st_table(tp (&arr)[n]) {
     }
 }
 
-template<typename tp, size_t n, ST_OP op>
+template<typename tp, unsigned long long n, ST_OP op>
 ST_Table<tp, n> make_st_table(std::array<tp, n> const &arr) {
     switch (op) {
         case ST_OP::Max:

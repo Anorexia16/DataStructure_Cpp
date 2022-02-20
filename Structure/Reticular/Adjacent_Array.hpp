@@ -2,9 +2,9 @@
 #define DATASTRUCTURE_ADJACENT_ARRAY_HPP
 
 #include <array>
-#include "../Linear/Queue_Chain.hpp"
-#include "../Linear/Stack_Chain.hpp"
-#include "../Abstract/Abstract_Graph.hpp"
+#include <Linear/Queue_Chain.hpp>
+#include <Linear/Stack_Chain.hpp>
+#include <Abstract/Abstract_Graph.hpp>
 
 template<size_t num, bool bidirectional = true, bool is_weighted = false>
 struct Adjacent_Array: public Graph

@@ -1,27 +1,32 @@
-#include "Structure/Dendroid/Dict_Trie_Tree.hpp"
-#include "Lib_Algorithm/Math/Matrix_Algorithm/Matrix.hpp"
-#include "Lib_Algorithm/Math/Matrix_Algorithm/Matrix_Inverse.hpp"
-#include "Lib_Algorithm/Math/Basic_Types/Complex.hpp"
+#include <Math_Types.hpp>
+#include "Discrete_Mathematics.hpp"
+#include <Iterations.hpp>
+#include <Sorting.hpp>
+#include <iterator>
+#include <iostream>
+#include <list>
+
+
+float int2char(long x) {
+    return 0.5+x;
+}
 
 int main() {
-    Dict dict {};
-    dict.import({"as_inf", "acos", "acot"});
-    dict.import({"inf", "pow", "sin", "sqrt"});
-    dict.emplace("atan");
-    dict.emplace("asin");
-    dict.emplace("as_one_num");
-    dict.init();
-    dict.input('a');
-    dict.input('s');
-    auto vec1 = dict.release();
-    dict.init();
-    dict.input('s');
-    auto vec2 = dict.release();
+    std::vector<int> vec{7, 1, 14, 61, 29, 13, 9, 54, 31};
+    int *arr = new int [5] {1, 2, 3, 4, 5};
+    auto &res = Yield(vec.begin(), vec.end(), int2char);
 
-    Matrix<Complex> A {{{1, 1}, {2, -1}, {3, 2}, {-2, 1}, {1, -1}, {5, -1}, {1, 2},
-                             {3, 0}, {0, -3}, {4, -1}, {2, 2}, {-1, 2}}, 3, 4};
-    Matrix<Complex> B {{{1, -1}, {4, -1}, {5, 1}, {-2, 1}, {3, 2}, {0, 1}, {2, 0}, {-1, 5}, {6, -3}, {3, 2},
-                            {1, 1}, {2, -1}, {2, -1}, {-3, -2}, {-2, 1}, {1, -2}}, 4, 4};
+    Static_Matrix<3, 4, Complex> A {{{1, 1}, {2, -1}, {3, 2}, {-2, 1}, {1, -1}, {5, -1}, {1, 2},
+                             {3, 0}, {0, -3}, {4, -1}, {2, 2}, {-1, 2}}};
+    Static_Matrix<4, 4, Complex> B {{{1, -1}, {4, -1}, {5, 1}, {-2, 1}, {3, 2}, {0, 1}, {2, 0}, {-1, 5}, {6, -3}, {3, 2},
+                            {1, 1}, {2, -1}, {2, -1}, {-3, -2}, {-2, 1}, {1, -2}}};
     auto C = A*B;
+    /*
+    do {
+        std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, " "));
+        std::cout << std::endl;
+    } while(next_permutation(vec.begin(), vec.end()));
+     */
+    quick_sort(vec.begin(), vec.end());
     return 0;
 }

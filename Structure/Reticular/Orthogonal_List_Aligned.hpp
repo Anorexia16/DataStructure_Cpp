@@ -1,6 +1,8 @@
 #ifndef DATASTRUCTURE_ORTHOGONAL_LIST_ALIGNED_HPP
 #define DATASTRUCTURE_ORTHOGONAL_LIST_ALIGNED_HPP
 
+#include <cstdlib>
+
 template<typename Tp>
 struct Orthogonal_Node {
     Orthogonal_Node *right {nullptr};

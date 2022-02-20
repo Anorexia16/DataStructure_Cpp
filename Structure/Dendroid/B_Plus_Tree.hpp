@@ -1,6 +1,7 @@
 #ifndef DATASTRUCTURE_B_PLUS_TREE_HPP
 #define DATASTRUCTURE_B_PLUS_TREE_HPP
 
+#include <cstdlib>
 template<typename K_Tp, typename V_Tp, size_t order>
 class B_Plus_Tree
 {

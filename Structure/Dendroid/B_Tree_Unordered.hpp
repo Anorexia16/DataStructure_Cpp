@@ -1,7 +1,9 @@
 #ifndef DATASTRUCTURE_B_TREE_UNORDERED_HPP
 #define DATASTRUCTURE_B_TREE_UNORDERED_HPP
 
-#include "../Assistance/Storage_Unit.hpp"
+#include <Assistance/Storage_Unit.hpp>
+#include <cstdlib>
+#include <utility>
 
 template<typename K_Tp, typename V_Tp, size_t order>
 class B_Tree_Unordered
@@ -13,7 +15,7 @@ private:
 
         std::pair<bool, size_t> seek(K_Tp const &) const;
 
-        Pair_Unit<K_Tp, V_Tp> Container[order] {};
+        KW_Pair<K_Tp, V_Tp> Container[order] {};
 
         Node* Table[order + 1] {};
 
@@ -75,7 +77,7 @@ void B_Tree_Unordered<K_Tp, V_Tp, order>::insert(const K_Tp &key, const V_Tp &va
     if (this->Root == nullptr)
     {
         this->Root = new Node {};
-        this->Root->Container[0] = Pair_Unit<K_Tp, V_Tp> {key, value};
+        this->Root->Container[0] = KW_Pair<K_Tp, V_Tp> {key, value};
         this->Root->Table[1] = nullptr;
         ++this->Root->Size;
         return;
@@ -105,7 +107,7 @@ void B_Tree_Unordered<K_Tp, V_Tp, order>::insert(const K_Tp &key, const V_Tp &va
                 {
                     _iter->Container[i + 1] = _iter->Container[i];
                 }
-                _iter->Container[_pair.second] = Pair_Unit<K_Tp,V_Tp>{key, value};
+                _iter->Container[_pair.second] = KW_Pair<K_Tp,V_Tp>{key, value};
                 _iter->Table[_pair.second] = nullptr;
                 ++_iter->Size;
                 if (_iter->Size > order) this->spilt(*_iter);
@@ -200,7 +202,7 @@ void B_Tree_Unordered<K_Tp, V_Tp, order>::destroy(B_Tree_Unordered::Node &_iter,
         {
             _iter.Table[_i] = _iter.Table[_i + 1];
         }
-        _iter.Container[_iter.Size - 2] = Pair_Unit<K_Tp,V_Tp> {};
+        _iter.Container[_iter.Size - 2] = KW_Pair<K_Tp,V_Tp> {};
         _iter.Table[_iter.Size - 1] = nullptr;
         --_iter.Size;
         if (_iter.Size == 1)

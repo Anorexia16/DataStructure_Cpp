@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_ADJACENCY_MULTILIST_HPP
 #define DATASTRUCTURE_ADJACENCY_MULTILIST_HPP
 
-#include "../Abstract/Abstract_Graph.hpp"
+#include <Abstract/Abstract_Graph.hpp>
 
 struct AM_Edge {
     size_t weight{};

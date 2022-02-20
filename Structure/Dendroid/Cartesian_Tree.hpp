@@ -1,6 +1,7 @@
 #ifndef DATASTRUCTURE_CARTESIAN_TREE_HPP
 #define DATASTRUCTURE_CARTESIAN_TREE_HPP
 
+#include <algorithm>
 #include <array>
 
 template<typename Tp, size_t n>
@@ -11,7 +12,7 @@ public:
         Cartesian_Node *left, *right, *father;
     };
 
-    explicit Cartesian_Tree(std::array<Tp, n> const &);
+    explicit Cartesian_Tree([[maybe_unused]] std::array<Tp, n> const &);
 
     std::array<Tp, n> heapify();
 
@@ -21,12 +22,12 @@ protected:
 };
 
 template<typename Tp, size_t n>
-Cartesian_Tree<Tp, n>::Cartesian_Tree(const std::array<Tp, n> &array)
+Cartesian_Tree<Tp, n>::Cartesian_Tree([[maybe_unused]] const std::array<Tp, n> &array)
 :Root{nullptr}
 {
     std::array<Tp, n> arr {array};
     std::sort(arr.begin(), arr.end());
-    for (auto const &iter: arr) insert(iter);
+    for ([[maybe_unused]] auto const &iter: arr) insert(iter);
 }
 
 template<typename Tp, size_t n>

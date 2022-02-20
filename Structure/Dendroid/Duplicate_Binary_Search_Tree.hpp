@@ -10,9 +10,9 @@ template<typename K_Tp, typename V_Tp>
 class Duplicate_Binary_Search_Tree
 {
 public:
-    using DBST_Node = Binary_Node<Pair_Unit<K_Tp, V_Tp>>;
+    using DBST_Node = Binary_Node<KW_Pair<K_Tp, V_Tp>>;
 
-    using DBST_Item = Pair_Unit<K_Tp, V_Tp>;
+    using DBST_Item = KW_Pair<K_Tp, V_Tp>;
 
     explicit Duplicate_Binary_Search_Tree(std::vector<DBST_Item> const &);
 
@@ -293,7 +293,7 @@ void Duplicate_Binary_Search_Tree<K_Tp, V_Tp>::destroy(Duplicate_Binary_Search_T
 }
 
 template<typename kt, typename vt>
-Duplicate_Binary_Search_Tree<kt, vt> make_DBST(std::vector<Pair_Unit<kt ,vt>> const &vec)
+Duplicate_Binary_Search_Tree<kt, vt> make_DBST(std::vector<KW_Pair<kt ,vt>> const &vec)
 {
     return Duplicate_Binary_Search_Tree<kt, vt> {vec};
 }

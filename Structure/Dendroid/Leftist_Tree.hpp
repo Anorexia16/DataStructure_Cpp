@@ -1,6 +1,8 @@
 #ifndef DATASTRUCTURE_LEFTIST_TREE_HPP
 #define DATASTRUCTURE_LEFTIST_TREE_HPP
 
+#include <utility>
+#include <cstdlib>
 #include <array>
 
 template<class cls>
@@ -169,12 +171,12 @@ typename Leftist_Tree<cls>::Leftist_Node &Leftist_Tree<cls>::merge_algorithm(Lef
 
 
 
-template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
-Leftist_Tree<cls> make_LT(bool reverse = false) {
-    return Leftist_Tree<cls>(reverse);
+template<class cls, template<typename elem> class Cont>
+Leftist_Tree<cls> make_LT() {
+    return Leftist_Tree<cls>();
 }
 
-template<class cls, template<typename elem, typename = std::allocator<elem>> class Cont>
+template<class cls, template<typename elem> class Cont>
 Leftist_Tree<cls> make_LT(Cont<cls> const &container, bool reverse=false) {
     Leftist_Tree<cls> _res {reverse};
     for(auto const &iter: container) _res.insert(iter);

@@ -5,7 +5,7 @@
 #include <utility>
 
 template<typename cls>
-class Matrix
+class Static_Matrix
 {
 public:
     virtual cls &get(size_t const &, size_t const &) = 0;

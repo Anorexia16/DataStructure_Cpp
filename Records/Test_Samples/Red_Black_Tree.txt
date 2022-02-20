@@ -1,0 +1,21 @@
+#include<iostream>
+#include "Structure/Red_Black_Tree.hpp"
+
+int main() {
+    std::vector<KW_Pair<int, std::string>> _vec {KW_Pair<int, std::string>{80, "a"}, KW_Pair<int, std::string>{60, "b"}, KW_Pair<int, std::string>{40, "c"},
+                                                   KW_Pair<int, std::string>{20, "d"}, KW_Pair<int, std::string>{50, "e"}, KW_Pair<int, std::string>{50, "e"},  KW_Pair<int, std::string>{45, "temp"},
+                                                   KW_Pair<int, std::string>{70, "f"}, KW_Pair<int, std::string>{120, "g"}, KW_Pair<int, std::string>{140, "h"}, KW_Pair<int, std::string>{100, "i"},
+                                                   KW_Pair<int, std::string>{45, "j"}};
+    auto c = make_rb(_vec);
+    c.erase(80);
+    c.erase(60);
+    c.erase(40);
+    c.erase(50);
+    c.erase(70);
+    c.erase(20);
+    c.erase(120);
+    c.erase(45);
+    c.erase(100);
+
+    std::cout << "Debug Hook" << std::endl;
+}

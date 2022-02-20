@@ -251,5 +251,4 @@ std::string Multi_Huffman_Tree<t, valid>::locate(const std::string &c) const {
     return _res;
 }
 
-
 #endif //DATASTRUCTURE_HUFFMAN_CODE_HPP
