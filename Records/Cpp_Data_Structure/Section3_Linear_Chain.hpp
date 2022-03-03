@@ -3,7 +3,7 @@
 
 #include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 #include "../../Structure/Linear/Chain_Bidirectional_Circle.hpp"
-#include "../../Structure/Linear/Array_List.hpp"
+#include "array_list.hpp"
 #include "../../Structure/Assistance/Node_Bidirectional.hpp"
 
 // assistance interface

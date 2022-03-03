@@ -3,8 +3,8 @@
 
 #include "../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 #include "../../Structure/Linear/Chain_Bidirectional_Circle.hpp"
-#include "../../Structure/Linear/Chain_Unidirectional.hpp"
-#include "../../Structure/Linear/Chain_Bidirectional.hpp"
+#include <Linear/Chain_Unidirectional.hpp>
+#include "chain.hpp"
 #include <ostream>
 #include <vector>
 #include <iterator>

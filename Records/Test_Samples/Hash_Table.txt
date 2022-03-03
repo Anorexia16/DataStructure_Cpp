@@ -1,11 +1,11 @@
 #include "Cpp_Data_Structure/Section4_Array_and_Matrix.hpp"
-#include "Structure/Hash_Table_STL.hpp"
+#include "Structure/hash_table.hpp"
 #include <iostream>
 
 size_t mod_five(int const &i) {return i % 5;}
 
 int main() {
-    Hash_Table_STL<int, int> A {mod_five};
+    hash_table<int, int> A {mod_five};
     A[0] = 12;
     A[2] = 13;
     A[0] = -2;

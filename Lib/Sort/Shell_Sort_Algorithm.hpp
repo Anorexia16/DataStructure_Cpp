@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_SHELL_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_SHELL_SORT_ALGORITHM_HPP
 
-#include <Iterations.hpp>
+#include "iterator.hpp"
 
 template<typename Tp, Iterable_Container Container>
 void shell_sort(Container &container)

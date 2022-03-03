@@ -2,9 +2,9 @@
 #include "Structure/Red_Black_Tree.hpp"
 
 int main() {
-    std::vector<KW_Pair<int, std::string>> _vec {KW_Pair<int, std::string>{80, "a"}, KW_Pair<int, std::string>{60, "b"}, KW_Pair<int, std::string>{40, "c"},
-                                                   KW_Pair<int, std::string>{20, "d"}, KW_Pair<int, std::string>{50, "e"}, KW_Pair<int, std::string>{50, "e"},  KW_Pair<int, std::string>{45, "temp"},
-                                                   KW_Pair<int, std::string>{70, "f"}, KW_Pair<int, std::string>{120, "g"}, KW_Pair<int, std::string>{140, "h"}};
+    std::vector<orderly_pair<int, std::string>> _vec {orderly_pair<int, std::string>{80, "a"}, orderly_pair<int, std::string>{60, "b"}, orderly_pair<int, std::string>{40, "c"},
+                                                   orderly_pair<int, std::string>{20, "d"}, orderly_pair<int, std::string>{50, "e"}, orderly_pair<int, std::string>{50, "e"},  orderly_pair<int, std::string>{45, "temp"},
+                                                   orderly_pair<int, std::string>{70, "f"}, orderly_pair<int, std::string>{120, "g"}, orderly_pair<int, std::string>{140, "h"}};
     auto c = make_rb(_vec);
     std::cout << "Debug Hook" << std::endl;
 }

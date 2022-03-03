@@ -1,7 +1,7 @@
 #ifndef DATASTRUCTURE_HEAP_SORT_ALGORITHM_HPP
 #define DATASTRUCTURE_HEAP_SORT_ALGORITHM_HPP
 
-#include <Iterations.hpp>
+#include "iterator.hpp"
 
 template<Random_Access_Iterator_Tag iterator>
 void heap_sort(iterator begin, iterator end)

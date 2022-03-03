@@ -6,7 +6,7 @@
 #include "../../Structure/Abstract/Abstract_Linear_List.hpp"
 
 template<typename T>
-class arrayList_Ti : LinearList<T>
+class arrayList_Ti : linear_list<T>
 {
 public:
     explicit arrayList_Ti(int const &x)

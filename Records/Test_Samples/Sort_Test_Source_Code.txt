@@ -4,8 +4,8 @@
 #include "Cpp_Data_Structure/Algorithm/Chain_Insert_Sort.hpp"
 
 int main() {
-    ChainUC<int> ci{10};
-    ChainUC<int> cq{10};
+    unidirectional_circle_chain<int> ci{10};
+    unidirectional_circle_chain<int> cq{10};
     ci.insert(0, 8);
     ci.insert(0, -1);
     ci.insert(0, 3);

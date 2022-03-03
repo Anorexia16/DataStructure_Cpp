@@ -5,7 +5,7 @@
 #include "../../../Structure/Linear/Chain_Unidirectional_Circle.hpp"
 
 template<typename T>
-class ChainMove : LinearList<T>, ChainUC<T> {
+class ChainMove : linear_list<T>, ChainUC<T> {
 public:
     ~ChainMove() = default;
 

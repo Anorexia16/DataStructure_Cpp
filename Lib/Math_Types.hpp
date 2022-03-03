@@ -312,10 +312,10 @@ struct Infinity {
             (Infinity const &)
     = delete;
 
-    Infinity operator++(int) const
+    const Infinity operator++(int) const
     {return Infinity{};}
 
-    Infinity operator--(int) const
+    const Infinity operator--(int) const
     {return Infinity{};}
 
     Infinity &operator++()

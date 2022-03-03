@@ -1,23 +1,23 @@
-#include "Structure/Binary_Tree.hpp"
+#include "Structure/binary_tree.hpp"
 #include <iostream>
 
 int main() {
-    Binary_Tree<std::string> tree {};
-    Binary_Node<std::string> head {"/"};
-    Binary_Node<std::string> child11 {"+"};
-    Binary_Node<std::string> child12 {"*"};
-    Binary_Node<std::string> child21 {"-"};
-    Binary_Node<std::string> child23 {"+"};
-    Binary_Node<std::string> child22 {"+"};
-    Binary_Node<std::string> child24 {"*"};
-    Binary_Node<std::string> child31 {""};
-    Binary_Node<std::string> child32 {"a"};
-    Binary_Node<std::string> child33 {"x"};
-    Binary_Node<std::string> child34 {"y"};
-    Binary_Node<std::string> child35 {""};
-    Binary_Node<std::string> child36 {"b"};
-    Binary_Node<std::string> child37 {"c"};
-    Binary_Node<std::string> child38 {"a"};
+    binary_tree<std::string> tree {};
+    binary_node<std::string> head {"/"};
+    binary_node<std::string> child11 {"+"};
+    binary_node<std::string> child12 {"*"};
+    binary_node<std::string> child21 {"-"};
+    binary_node<std::string> child23 {"+"};
+    binary_node<std::string> child22 {"+"};
+    binary_node<std::string> child24 {"*"};
+    binary_node<std::string> child31 {""};
+    binary_node<std::string> child32 {"a"};
+    binary_node<std::string> child33 {"x"};
+    binary_node<std::string> child34 {"y"};
+    binary_node<std::string> child35 {""};
+    binary_node<std::string> child36 {"b"};
+    binary_node<std::string> child37 {"c"};
+    binary_node<std::string> child38 {"a"};
 
     tree.bind_top(head);
     tree.to_inner();

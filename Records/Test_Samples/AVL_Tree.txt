@@ -3,9 +3,9 @@
 
 
 int main() {
-    std::vector<KW_Pair<int, std::string>> _vec {KW_Pair<int, std::string>{30, "a"}, KW_Pair<int, std::string>{5, "b"}, KW_Pair<int, std::string>{2, "c"},
-                                                   KW_Pair<int, std::string>{40, "d"}, KW_Pair<int, std::string>{35, "e"}, KW_Pair<int, std::string>{80, "temp"},
-                                                   KW_Pair<int, std::string>{80, "f"}};
+    std::vector<orderly_pair<int, std::string>> _vec {orderly_pair<int, std::string>{30, "a"}, orderly_pair<int, std::string>{5, "b"}, orderly_pair<int, std::string>{2, "c"},
+                                                   orderly_pair<int, std::string>{40, "d"}, orderly_pair<int, std::string>{35, "e"}, orderly_pair<int, std::string>{80, "temp"},
+                                                   orderly_pair<int, std::string>{80, "f"}};
     auto c = make_avl(_vec);
 
     std::cout << "Debug Hook" << std::endl;

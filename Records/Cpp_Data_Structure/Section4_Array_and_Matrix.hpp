@@ -10,13 +10,13 @@
 
 // 4.15-16
 // Details in:
-//      Structure/Matrix_STL1.hpp;
+//      structure/Matrix_STL1.hpp;
 
 // 4.17
 // Details in:
-//      Structure/Matrix_STL2.hpp;
-//      Structure/Matrix_P2.hpp;
-//      Structure/Matrix_N2.hpp;
+//      structure/Matrix_STL2.hpp;
+//      structure/Matrix_P2.hpp;
+//      structure/Matrix_N2.hpp;
 
 // assistance tools
 template<typename cls>
